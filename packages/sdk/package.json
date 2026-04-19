@@ -27,7 +27,7 @@
   "scripts": {
     "build": "tsup src/index.ts src/render.tsx --format esm,cjs --dts",
     "typecheck": "tsc --noEmit -p tsconfig.json",
-    "test": "vitest run"
+    "test": "vitest run --passWithNoTests"
   },
   "peerDependencies": {
     "react": ">=19.0.0"

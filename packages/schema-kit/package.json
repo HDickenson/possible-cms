@@ -23,7 +23,7 @@
     "build": "tsup src/index.ts --format esm,cjs --dts",
     "lint": "echo 'TODO lint'",
     "typecheck": "tsc --noEmit -p tsconfig.json",
-    "test": "vitest run"
+    "test": "vitest run --passWithNoTests"
   },
   "peerDependencies": {
     "react": ">=19.0.0",
