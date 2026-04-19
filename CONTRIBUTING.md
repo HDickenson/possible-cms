@@ -4,7 +4,7 @@ Thanks for considering a contribution. This project is MIT-licensed and welcomes
 
 ## Ways to contribute
 
-- Report a bug via [issues](https://github.com/kanousei/possible-cms/issues).
+- Report a bug via [issues](https://github.com/HDickenson/possible-cms/issues).
 - Propose a feature via a GitHub Discussion first, before opening an issue.
 - Fix a bug or implement a feature: fork, branch, PR.
 - Add a reference example project under `examples/<your-project>/`.
@@ -13,7 +13,7 @@ Thanks for considering a contribution. This project is MIT-licensed and welcomes
 ## Development setup
 
 ```bash
-git clone git@github.com:kanousei/possible-cms.git
+git clone git@github.com:HDickenson/possible-cms.git
 cd possible-cms
 pnpm install
 cp .dev.vars.example .dev.vars   # fill values

@@ -6,11 +6,11 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kanousei/possible-cms.git"
+    "url": "git+https://github.com/HDickenson/possible-cms.git"
   },
-  "homepage": "https://github.com/kanousei/possible-cms",
+  "homepage": "https://github.com/HDickenson/possible-cms",
   "bugs": {
-    "url": "https://github.com/kanousei/possible-cms/issues"
+    "url": "https://github.com/HDickenson/possible-cms/issues"
   },
   "packageManager": "pnpm@9.12.0",
   "engines": {

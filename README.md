@@ -11,7 +11,7 @@
 Prerequisites: Node 20+, pnpm 9+, Wrangler 3.90+, a Cloudflare account with D1 / R2 / Workers / Pages access, a GitHub OAuth App.
 
 ```bash
-git clone git@github.com:kanousei/possible-cms.git
+git clone git@github.com:HDickenson/possible-cms.git
 cd possible-cms
 pnpm install
 cp .dev.vars.example .dev.vars   # fill Cloudflare + GitHub OAuth creds
