@@ -14,7 +14,7 @@ inputDocuments:
 project_name: Possible CMS
 user_name: Kanousei
 date: 2026-04-19
-workflowType: 'epics-and-stories'
+workflowType: "epics-and-stories"
 ---
 
 # Possible CMS — Epic Breakdown
@@ -71,66 +71,66 @@ From [architecture.md](architecture.md):
 
 Every Phase A FR mapped to exactly one epic. Phase B FRs marked `[B]` and listed in Epic B1 at the bottom.
 
-| FR | Epic | Story |
-|----|------|-------|
-| FR1 | 2 | 2.1 |
-| FR2 | 2 | 2.1 |
-| FR3 | 2 | 2.2 |
-| FR4 | 2 | 2.3 |
-| FR5 | 2 | 2.3 |
-| FR6 | 11 | 11.1 |
-| FR8 | 1 | 1.3 |
-| FR9 | 3 | 3.1 |
-| FR10 | 3 | 3.1 |
-| FR11 | 10 | 10.1 |
-| FR12 | 3 | 3.2 |
-| FR15 | 4 | 4.2 |
-| FR16 | 4 | 4.3 |
-| FR17 | 4 | 4.3 |
-| FR18 | 4 | 4.3 |
-| FR19 | 4 | 4.4 |
-| FR20 | 4 | 4.5 |
-| FR21 | 4 | 4.4, 4.5 |
-| FR22 | 4 | 4.6 |
-| FR23 | 4 | 4.7 |
-| FR24 | 4 | 4.7 |
-| FR25 | 5 | 5.1 |
-| FR26 | 5 | 5.2 |
-| FR27 | 5 | 5.2 |
-| FR28 | 5 | 5.3 |
-| FR29 | 5 | 5.4 |
-| FR30 | 5 | 5.5 |
-| FR31 | 6 | 6.1 |
-| FR32 | 6 | 6.1 |
-| FR33 | 6 | 6.2 |
-| FR34 | 6 | 6.3 |
-| FR35 | 6 | 6.2 |
-| FR36 | 6 | 6.4 |
-| FR37 | 7 | 7.1 |
-| FR38 | 7 | 7.2 |
-| FR39 | 7 | 7.3 |
-| FR40 | 7 | 7.4 |
-| FR42 | 8 | 8.1 |
-| FR43 | 8 | 8.1 |
-| FR44 | 8 | 8.1 |
-| FR45 | 8 | 8.2 |
-| FR46 | 8 | 8.3 |
-| FR47 | 8 | 8.4 |
-| FR48 | 9 | 9.1 |
-| FR49 | 9 | 9.2 |
-| FR50 | 9 | 9.3 |
-| FR51 | 9 | 9.3 |
-| FR52 | 9 | 9.4 |
-| FR53 | 9 | 9.5 |
-| FR54 | 12 | 12.1 |
-| FR55 | 10 | 10.1 |
-| FR56 | 10 | 10.2 |
-| FR57 | 8 | 8.5 |
-| FR58 | 8 | 8.5 |
-| FR59 | 8 | 8.5, 12.2 |
-| FR61 | 11 | 11.1 |
-| FR62 | 11 | 11.2 |
-| FR63 | 11 | 11.3 |
+| FR   | Epic | Story     |
+| ---- | ---- | --------- |
+| FR1  | 2    | 2.1       |
+| FR2  | 2    | 2.1       |
+| FR3  | 2    | 2.2       |
+| FR4  | 2    | 2.3       |
+| FR5  | 2    | 2.3       |
+| FR6  | 11   | 11.1      |
+| FR8  | 1    | 1.3       |
+| FR9  | 3    | 3.1       |
+| FR10 | 3    | 3.1       |
+| FR11 | 10   | 10.1      |
+| FR12 | 3    | 3.2       |
+| FR15 | 4    | 4.2       |
+| FR16 | 4    | 4.3       |
+| FR17 | 4    | 4.3       |
+| FR18 | 4    | 4.3       |
+| FR19 | 4    | 4.4       |
+| FR20 | 4    | 4.5       |
+| FR21 | 4    | 4.4, 4.5  |
+| FR22 | 4    | 4.6       |
+| FR23 | 4    | 4.7       |
+| FR24 | 4    | 4.7       |
+| FR25 | 5    | 5.1       |
+| FR26 | 5    | 5.2       |
+| FR27 | 5    | 5.2       |
+| FR28 | 5    | 5.3       |
+| FR29 | 5    | 5.4       |
+| FR30 | 5    | 5.5       |
+| FR31 | 6    | 6.1       |
+| FR32 | 6    | 6.1       |
+| FR33 | 6    | 6.2       |
+| FR34 | 6    | 6.3       |
+| FR35 | 6    | 6.2       |
+| FR36 | 6    | 6.4       |
+| FR37 | 7    | 7.1       |
+| FR38 | 7    | 7.2       |
+| FR39 | 7    | 7.3       |
+| FR40 | 7    | 7.4       |
+| FR42 | 8    | 8.1       |
+| FR43 | 8    | 8.1       |
+| FR44 | 8    | 8.1       |
+| FR45 | 8    | 8.2       |
+| FR46 | 8    | 8.3       |
+| FR47 | 8    | 8.4       |
+| FR48 | 9    | 9.1       |
+| FR49 | 9    | 9.2       |
+| FR50 | 9    | 9.3       |
+| FR51 | 9    | 9.3       |
+| FR52 | 9    | 9.4       |
+| FR53 | 9    | 9.5       |
+| FR54 | 12   | 12.1      |
+| FR55 | 10   | 10.1      |
+| FR56 | 10   | 10.2      |
+| FR57 | 8    | 8.5       |
+| FR58 | 8    | 8.5       |
+| FR59 | 8    | 8.5, 12.2 |
+| FR61 | 11   | 11.1      |
+| FR62 | 11   | 11.2      |
+| FR63 | 11   | 11.3      |
 
 ## Epic List
 
@@ -1096,16 +1096,16 @@ So that v0.1 and every patch stays shippable.
 
 ### Parallelism Matrix (for orchestrator dispatch)
 
-| Day | Serial | Parallel workers |
-|-----|--------|------------------|
-| Day 1 | Epic 1 (schema contract lock) | — |
-| Day 2 | — | Epic 2 (backend+frontend) · Epic 4 (frontend+blocks) · Epic 5 (backend+frontend) · Epic 6 (backend+R2) · Epic 11 (backend) |
-| Day 3 | — | Epic 3 (frontend) · Epic 7 (backend+cron) · Epic 8 (backend+SDK) · Epic 9 (backend) |
-| Day 4 | — | Epic 10 (CLI+examples) · remaining Epic 2/4/5/6/7/8/9 polish |
-| Day 5 | Epic 12 (OSS release + E2E green) | — |
+| Day   | Serial                            | Parallel workers                                                                                                           |
+| ----- | --------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| Day 1 | Epic 1 (schema contract lock)     | —                                                                                                                          |
+| Day 2 | —                                 | Epic 2 (backend+frontend) · Epic 4 (frontend+blocks) · Epic 5 (backend+frontend) · Epic 6 (backend+R2) · Epic 11 (backend) |
+| Day 3 | —                                 | Epic 3 (frontend) · Epic 7 (backend+cron) · Epic 8 (backend+SDK) · Epic 9 (backend)                                        |
+| Day 4 | —                                 | Epic 10 (CLI+examples) · remaining Epic 2/4/5/6/7/8/9 polish                                                               |
+| Day 5 | Epic 12 (OSS release + E2E green) | —                                                                                                                          |
 
 5-day continuous-execution target per the pacing correction on KAN-57. Buffer for Puck fit spike and D1 scale check built in.
 
 ---
 
-*Epic and story breakdown complete. Ready for Kanousei Web Studio parallel workers.*
+_Epic and story breakdown complete. Ready for Kanousei Web Studio parallel workers._
