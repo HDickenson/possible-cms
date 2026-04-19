@@ -25,9 +25,11 @@ uxFile: null
 ### PRD Files Found
 
 **Whole Documents:**
+
 - `prd.md` (≈52 KB, modified 2026-04-19) — finalized in this session, 11 sections, 64 FRs, 49 NFRs, polish complete
 
 **Sharded Documents:**
+
 - None
 
 ### Architecture Files Found
@@ -47,7 +49,7 @@ uxFile: null
 - ✅ **No duplicates.** No whole/sharded conflicts for any document type.
 - ⚠️ **Architecture document not found.** Will limit assessment of technical feasibility alignment.
 - ⚠️ **Epics & Stories documents not found.** Core purpose of this readiness check (epic coverage validation) cannot be fully exercised.
-- ⚠️ **UX Design document not found.** UX alignment step (step 4) will only be able to assess UX implications *as described in the PRD* rather than against a separate spec.
+- ⚠️ **UX Design document not found.** UX alignment step (step 4) will only be able to assess UX implications _as described in the PRD_ rather than against a separate spec.
 
 ### Interpretation
 
@@ -71,6 +73,7 @@ PRD loaded completely from [prd.md](/Users/kanousei/Documents/KPD/_bmad-output/p
 Grouped by capability area as defined in PRD §Functional Requirements. `[B]` = deferred to Phase B; `[C]` = Phase C; absence of marker = Phase A (v0.1 binding). Full requirement text is authoritative in the PRD; inventory here is for completeness verification.
 
 **1. Authentication & Identity (7 FRs)**
+
 - FR1: Editor can authenticate to the admin via GitHub OAuth.
 - FR2: System establishes a session-bound identity after successful authentication and issues a JWT valid for configurable TTL.
 - FR3: Editor can terminate their session (logout).
@@ -80,6 +83,7 @@ Grouped by capability area as defined in PRD §Functional Requirements. `[B]` = 
 - FR7 [B]: Editor can authenticate via Cloudflare Access as an alternative to GitHub OAuth.
 
 **2. Workspace / Project / Site Management (7 FRs)**
+
 - FR8: System stores content within a `workspace → project → site` hierarchy with enforced tenant scoping on every read and write.
 - FR9: Operator can list all projects within the active workspace.
 - FR10: Operator can list all sites within a given project.
@@ -89,6 +93,7 @@ Grouped by capability area as defined in PRD §Functional Requirements. `[B]` = 
 - FR14 [B]: Operator can switch between workspaces in the admin UI.
 
 **3. Page Composition / Visual Block Canvas (10 FRs)**
+
 - FR15: Editor can open an existing page in a visual canvas that renders the page as it will appear live.
 - FR16: Editor can drag a block from a block palette onto the canvas.
 - FR17: Editor can reorder blocks on the canvas by drag.
@@ -101,6 +106,7 @@ Grouped by capability area as defined in PRD §Functional Requirements. `[B]` = 
 - FR24: System renders an unknown (de-registered) block type as a placeholder rather than crashing the page.
 
 **4. Content Records (6 FRs)**
+
 - FR25: Editor can list all records of a given collection, filterable and sortable.
 - FR26: Editor can create a new record via a form whose fields are generated from the collection's registered schema.
 - FR27: Editor can update, delete, and duplicate records.
@@ -109,6 +115,7 @@ Grouped by capability area as defined in PRD §Functional Requirements. `[B]` = 
 - FR30: Operator can define a collection by registering its Zod schema; the admin surfaces the collection automatically.
 
 **5. Media Management (6 FRs)**
+
 - FR31: Editor can upload an image or other asset through the admin; assets stored in R2 under a tenant-scoped prefix.
 - FR32: System automatically transforms uploaded images for web delivery (resize, format conversion) via the configured image transform pipeline.
 - FR33: Editor can browse all assets belonging to the current site in a media library.
@@ -117,6 +124,7 @@ Grouped by capability area as defined in PRD §Functional Requirements. `[B]` = 
 - FR36: Editor receives a human-readable error with a recovery action when an upload fails.
 
 **6. Publishing & Scheduling (5 FRs)**
+
 - FR37: Editor can publish a page or record, transitioning it from `draft` to `live`.
 - FR38: Editor can schedule a page or record to publish at a specific future datetime in a selected timezone.
 - FR39: System automatically transitions scheduled items to `live` at or after their scheduled time without editor intervention.
@@ -124,6 +132,7 @@ Grouped by capability area as defined in PRD §Functional Requirements. `[B]` = 
 - FR41 [B]: Editor can view a previous version of a page or record and revert to it.
 
 **7. Public Content Delivery (6 FRs)**
+
 - FR42: Consumer can fetch a live page by site + slug via the public read API.
 - FR43: Consumer can fetch a single record by site + collection + slug via the public read API.
 - FR44: Consumer can list records of a given collection with pagination.
@@ -132,6 +141,7 @@ Grouped by capability area as defined in PRD §Functional Requirements. `[B]` = 
 - FR47: Operator can export all content for a given site as a JSON snapshot via the CLI, suitable for static-site build pipelines.
 
 **8. Agent / API Integration (6 FRs)**
+
 - FR48: Agent can authenticate to the admin API using a scoped API token.
 - FR49: Agent can introspect the available collections, their schemas, and the registered block types for a given site.
 - FR50: Agent can create, update, and delete records scoped to the token's permitted sites.
@@ -140,6 +150,7 @@ Grouped by capability area as defined in PRD §Functional Requirements. `[B]` = 
 - FR53: System enforces that token scopes cannot exceed the permissions granted at issuance.
 
 **9. Developer Experience — SDK, CLI, Schema Extension (7 FRs)**
+
 - FR54: Operator can install the CMS via a single documented command sequence in under 10 minutes on a fresh machine.
 - FR55: Operator can initialize a new project's schema bundle via a CLI prompt.
 - FR56: Operator can register new block types and collections by editing TypeScript files in a schema bundle; the admin reflects the changes after redeploy.
@@ -149,6 +160,7 @@ Grouped by capability area as defined in PRD §Functional Requirements. `[B]` = 
 - FR60 [B]: Third-party developer can extend the block registry and collection set via a plugin package without forking the core repo.
 
 **10. Observability & Audit (4 FRs)**
+
 - FR61: System records every mutation in an audit log, including actor identity, action, target entity, timestamp, tenant scope.
 - FR62: Editor or Operator can view the audit log filtered by actor, entity, or time range.
 - FR63: System performs a nightly backup of the database to blob storage and documents a restore procedure.
@@ -199,12 +211,13 @@ From other PRD sections (not numbered FR/NFR but binding):
 **Measurability.** Every NFR has a quantified threshold (P50/P95/P99, monthly %, ≤ / ≥ thresholds, dollar costs, retention days). Every Success Criterion in the Measurable Outcomes table has a target + measurement method.
 
 **Gaps noted for downstream resolution:**
+
 - **10 starter blocks named but not specified.** PRD lists Hero, RichText MDX, Image, Pricing, FAQ, CTA, Columns, Spacer, Embed, Testimonials but does not define Zod prop schemas or fields layout per block. This is intentional — block design is an Architecture + UX concern, not a PRD concern.
 - **Reference projects' schemas not specified.** AIIA and Barbuda example bundles are named as Phase A deliverables but their concrete Zod schemas are not in the PRD. Correctly deferred to implementation (examples directory + seed importers).
 - **Admin UX patterns not specified.** Navigation structure, list views, form layouts, media library modal design — all correctly deferred to UX Design step.
 - **Database schema not specified.** Table definitions, indexes, migration strategy — correctly deferred to Architecture step.
 
-None of these gaps are PRD defects. They are *expected deferrals* to downstream workflows.
+None of these gaps are PRD defects. They are _expected deferrals_ to downstream workflows.
 
 ## Step 3 — Epic Coverage Validation
 
@@ -222,21 +235,21 @@ No epics or stories document exists in `{planning_artifacts}/`. Expected at this
 
 Every FR currently carries status ❌ NOT YET ALLOCATED. Rather than enumerate 64 identical rows, the following table lists **epic clusters that must be created** grouped by PRD capability area, with the FRs each cluster must cover. This is the input specification for `/bmad-create-epics-and-stories`.
 
-| Proposed Epic Cluster | FRs to cover | Phase | Week (per plan) |
-|----------------------|--------------|-------|-----------------|
-| **Epic 1 — Platform Scaffold & Schema Contract** | FR8, FR11 (partial), FR30 (foundational), schema contract issuance | A | Week 1 |
-| **Epic 2 — Authentication & Identity** | FR1, FR2, FR3, FR4, FR5, FR6 | A | Week 2 |
-| **Epic 3 — Admin Shell & Tenancy Management** | FR9, FR10, FR11, FR12 | A | Week 2 |
-| **Epic 4 — Block Registry & Visual Canvas** | FR15, FR16, FR17, FR18, FR19, FR20, FR21, FR22, FR23, FR24 | A | Week 2–3 |
-| **Epic 5 — Content Records & Schema-Driven Forms** | FR25, FR26, FR27, FR28, FR29, FR30 | A | Week 3 |
-| **Epic 6 — Media Management** | FR31, FR32, FR33, FR34, FR35, FR36 | A | Week 3 |
-| **Epic 7 — Publishing & Scheduling** | FR37, FR38, FR39, FR40 | A | Week 4 |
-| **Epic 8 — Public Content Delivery & SDK** | FR42, FR43, FR44, FR45, FR46, FR47, FR57, FR58, FR59 | A | Week 4 |
-| **Epic 9 — Agent API Integration** | FR48, FR49, FR50, FR51, FR52, FR53 | A | Week 4–5 |
-| **Epic 10 — Developer Experience (CLI, Install, Examples)** | FR54, FR55, FR56 + AIIA + Barbuda seed importers | A | Week 5 |
-| **Epic 11 — Observability, Audit & Backup** | FR61, FR62, FR63 | A | Week 6 |
-| **Epic 12 — OSS Release Hardening** | README, CONTRIBUTING, CI, E2E matrix, rate-limiting, polish | A | Week 6 |
-| **Epic B1** (Phase B) | FR7, FR13, FR14, FR41, FR60, FR64 | B | Months 2–4 |
+| Proposed Epic Cluster                                       | FRs to cover                                                       | Phase | Week (per plan) |
+| ----------------------------------------------------------- | ------------------------------------------------------------------ | ----- | --------------- |
+| **Epic 1 — Platform Scaffold & Schema Contract**            | FR8, FR11 (partial), FR30 (foundational), schema contract issuance | A     | Week 1          |
+| **Epic 2 — Authentication & Identity**                      | FR1, FR2, FR3, FR4, FR5, FR6                                       | A     | Week 2          |
+| **Epic 3 — Admin Shell & Tenancy Management**               | FR9, FR10, FR11, FR12                                              | A     | Week 2          |
+| **Epic 4 — Block Registry & Visual Canvas**                 | FR15, FR16, FR17, FR18, FR19, FR20, FR21, FR22, FR23, FR24         | A     | Week 2–3        |
+| **Epic 5 — Content Records & Schema-Driven Forms**          | FR25, FR26, FR27, FR28, FR29, FR30                                 | A     | Week 3          |
+| **Epic 6 — Media Management**                               | FR31, FR32, FR33, FR34, FR35, FR36                                 | A     | Week 3          |
+| **Epic 7 — Publishing & Scheduling**                        | FR37, FR38, FR39, FR40                                             | A     | Week 4          |
+| **Epic 8 — Public Content Delivery & SDK**                  | FR42, FR43, FR44, FR45, FR46, FR47, FR57, FR58, FR59               | A     | Week 4          |
+| **Epic 9 — Agent API Integration**                          | FR48, FR49, FR50, FR51, FR52, FR53                                 | A     | Week 4–5        |
+| **Epic 10 — Developer Experience (CLI, Install, Examples)** | FR54, FR55, FR56 + AIIA + Barbuda seed importers                   | A     | Week 5          |
+| **Epic 11 — Observability, Audit & Backup**                 | FR61, FR62, FR63                                                   | A     | Week 6          |
+| **Epic 12 — OSS Release Hardening**                         | README, CONTRIBUTING, CI, E2E matrix, rate-limiting, polish        | A     | Week 6          |
+| **Epic B1** (Phase B)                                       | FR7, FR13, FR14, FR41, FR60, FR64                                  | B     | Months 2–4      |
 
 12 Phase A epics covering all 56 binding FRs. Each Phase A epic maps to at least one week in the milestone plan.
 
@@ -285,6 +298,7 @@ A Phase A-adequate UX spec needs to specify — and a UX-lite spec for advisor-m
 ### Alignment Issues
 
 None detectable — UX spec does not yet exist. No conflicts between PRD and UX are possible until UX is authored. When it is, re-run this step to validate:
+
 - No UX patterns that contradict the compose-don't-author ceiling (e.g. a block-builder UI inside the admin would violate it).
 - No UX patterns that require FRs outside the contract.
 - No UX requirements that violate NFR thresholds (e.g. a design that forces >100ms canvas interactions).
@@ -306,20 +320,20 @@ No epics file exists. Applying `create-epics-and-stories` quality standards **pr
 
 ### User Value Focus Check (prospective)
 
-| Proposed Epic | User value | Verdict |
-|---------------|------------|---------|
-| 1 — Platform Scaffold & Schema Contract | None — pure scaffold | 🟠 **Reframe required.** Rename to "Marco can deploy Possible CMS from a fresh clone" and scope to FR54-end-to-end: clone → install → wrangler deploy → admin loads. Makes the scaffold user-delivered, not a technical milestone. |
-| 2 — Authentication & Identity | Editor can log in; Operator can issue agent tokens | 🟢 Borderline accepted. Frame stories around Priya's login + Operator's token flow. |
-| 3 — Admin Shell & Tenancy Management | Operator navigates projects/sites | 🟢 OK |
-| 4 — Block Registry & Visual Canvas | Priya edits a page (hero journey) | 🟢 Strong user value |
-| 5 — Content Records & Schema-Driven Forms | Editor manages typed content | 🟢 OK |
-| 6 — Media Management | Editor uploads and picks media | 🟢 OK |
-| 7 — Publishing & Scheduling | Editor publishes; schedule trigger fires | 🟢 Strong user value (Priya's climax) |
-| 8 — Public Content Delivery & SDK | Consumer site renders CMS content | 🟢 OK |
-| 9 — Agent API Integration | Agent operates (Atlas journey) | 🟢 OK |
-| 10 — Developer Experience (CLI, Install, Examples) | Operator scaffolds new project | 🟢 Marco journey |
-| 11 — Observability, Audit & Backup | Operator can trust the system | 🟠 Borderline. Reframe stories around user-visible value: "Editor can see audit log of who changed what", "Operator can restore from backup in <4h". Avoid "System logs mutations" framing. |
-| 12 — OSS Release Hardening | External Operator can adopt | 🟠 **Reframe required.** Rename to "External Operator can adopt Possible CMS from GitHub" and tie every story to NFR7 (10-min install), README quality, CI pass, etc. |
+| Proposed Epic                                      | User value                                         | Verdict                                                                                                                                                                                                                            |
+| -------------------------------------------------- | -------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1 — Platform Scaffold & Schema Contract            | None — pure scaffold                               | 🟠 **Reframe required.** Rename to "Marco can deploy Possible CMS from a fresh clone" and scope to FR54-end-to-end: clone → install → wrangler deploy → admin loads. Makes the scaffold user-delivered, not a technical milestone. |
+| 2 — Authentication & Identity                      | Editor can log in; Operator can issue agent tokens | 🟢 Borderline accepted. Frame stories around Priya's login + Operator's token flow.                                                                                                                                                |
+| 3 — Admin Shell & Tenancy Management               | Operator navigates projects/sites                  | 🟢 OK                                                                                                                                                                                                                              |
+| 4 — Block Registry & Visual Canvas                 | Priya edits a page (hero journey)                  | 🟢 Strong user value                                                                                                                                                                                                               |
+| 5 — Content Records & Schema-Driven Forms          | Editor manages typed content                       | 🟢 OK                                                                                                                                                                                                                              |
+| 6 — Media Management                               | Editor uploads and picks media                     | 🟢 OK                                                                                                                                                                                                                              |
+| 7 — Publishing & Scheduling                        | Editor publishes; schedule trigger fires           | 🟢 Strong user value (Priya's climax)                                                                                                                                                                                              |
+| 8 — Public Content Delivery & SDK                  | Consumer site renders CMS content                  | 🟢 OK                                                                                                                                                                                                                              |
+| 9 — Agent API Integration                          | Agent operates (Atlas journey)                     | 🟢 OK                                                                                                                                                                                                                              |
+| 10 — Developer Experience (CLI, Install, Examples) | Operator scaffolds new project                     | 🟢 Marco journey                                                                                                                                                                                                                   |
+| 11 — Observability, Audit & Backup                 | Operator can trust the system                      | 🟠 Borderline. Reframe stories around user-visible value: "Editor can see audit log of who changed what", "Operator can restore from backup in <4h". Avoid "System logs mutations" framing.                                        |
+| 12 — OSS Release Hardening                         | External Operator can adopt                        | 🟠 **Reframe required.** Rename to "External Operator can adopt Possible CMS from GitHub" and tie every story to NFR7 (10-min install), README quality, CI pass, etc.                                                              |
 
 **Verdict:** 3 of 12 epics need reframing to deliver user value in their title and goal. All 3 are defensible as prerequisites/completion work, but without reframing they read as technical-milestones and violate the "user value per epic" standard.
 
@@ -352,7 +366,7 @@ Best-practice reminders for whoever authors stories:
 
 - **Story 1.1 must be completable alone** — propose: "Operator clones the repo and `pnpm install` succeeds." Not "Set up monorepo structure."
 - **Avoid forward-reference like "needs Epic 4 canvas"** — instead, use flags/stubs. E.g. Epic 3 Story "Operator sees Pages list view" should render a list with a placeholder "open canvas" button that becomes functional in Epic 4. The list view itself is independently valuable (you can see page titles, statuses, updated timestamps).
-- **Database migration timing.** Put *only* `workspace`, `project`, `site`, `user`, `membership`, `audit_log` in Epic 1. Defer `page`, `record`, `asset`, `asset_reference`, `agent_token`, `schedule_job` to the epics that first need them (Epic 4, 5, 6, 9, 2, 7 respectively). This matches the "tables created only when first needed" standard and keeps Epic 1 small.
+- **Database migration timing.** Put _only_ `workspace`, `project`, `site`, `user`, `membership`, `audit_log` in Epic 1. Defer `page`, `record`, `asset`, `asset_reference`, `agent_token`, `schedule_job` to the epics that first need them (Epic 4, 5, 6, 9, 2, 7 respectively). This matches the "tables created only when first needed" standard and keeps Epic 1 small.
 - **Puck canvas story breakdown.** FR15-FR24 is 10 FRs; don't make it 10 stories. Real breakdown (per best-practice sizing):
   - Story: canvas shell loads an existing page in read-only preview (FR15)
   - Story: block palette appears; drag-drop adds a block (FR16, partial FR22)
@@ -383,7 +397,7 @@ Scenario: Drag a block from palette to canvas
 
 ### Special Implementation Checks
 
-- **Starter template requirement.** No starter template currently mandated in the PRD. The approved plan §6 repo layout acts as *our* internal template. Once architecture is authored, decide whether to (a) ship a `create-possible-cms` CLI bootstrap, or (b) make `kanousei/possible-cms` the "Use this template" target. Either is fine; pick one before Epic 10 stories are written.
+- **Starter template requirement.** No starter template currently mandated in the PRD. The approved plan §6 repo layout acts as _our_ internal template. Once architecture is authored, decide whether to (a) ship a `create-possible-cms` CLI bootstrap, or (b) make `kanousei/possible-cms` the "Use this template" target. Either is fine; pick one before Epic 10 stories are written.
 - **Greenfield indicators.** Possible CMS is greenfield for v0.1. Epic 1 must include dev-env config + CI pipeline (both called out in the Plan §6 repo layout). Epic 12 handles OSS-specific polish.
 - **Brownfield indicators (for AIIA consumer).** The AIIA consumer side is brownfield — an existing Astro site migrates to consume Possible CMS. That migration is Epic 10's `examples/aiia/` + `possible-cms export` + verification that AIIA's current `src/content/` matches the exported JSON byte-identically. Call this out as a "migration story" in Epic 10.
 
@@ -392,12 +406,14 @@ Scenario: Drag a block from palette to canvas
 **🔴 Critical Violations (none yet — epics don't exist)**
 
 **🟠 Major Issues (to prevent during authoring)**
+
 - Epic 1 framed as technical scaffold instead of "Marco can deploy" — reframe.
 - Epic 12 framed as hardening checklist instead of "External Operator can adopt" — reframe.
 - Risk of over-splitting Puck canvas into 10+ trivial stories (or under-splitting into 1 giant story) — use the suggested breakdown above.
 - Risk of Epic 1 creating all tables upfront — only tenancy + audit in Epic 1.
 
 **🟡 Minor Concerns (to prevent during authoring)**
+
 - Epic 11 framing (observability) drifts toward "System logs…" — reframe to user-value.
 - Dependency on a starter-template decision that hasn't been made — decide in architecture.
 
@@ -412,6 +428,7 @@ After `/bmad-create-epics-and-stories` runs, re-run step 5 of this readiness che
 **NEEDS WORK — artifacts missing (expected at this stage).**
 
 Breakdown by artifact:
+
 - **PRD:** ✅ READY. Complete, dense, traceable, measurable. Zero anti-patterns. Capability contract binding. No defects.
 - **Architecture:** ⚠️ NOT STARTED. Next workflow.
 - **UX Design:** ⚠️ NOT STARTED. Next workflow.
@@ -422,8 +439,9 @@ The overall "NEEDS WORK" flag is **not a defect in the PRD** — it reflects tha
 ### Critical Issues Requiring Immediate Action
 
 None. There are zero 🔴 Critical violations in the PRD. The "issues" surfaced in this report are all:
+
 - **Missing downstream artifacts** (Architecture, UX, Epics) — expected, run the next workflows.
-- **Prospective 🟠 major issues** flagged *so they can be avoided during epic authoring* (e.g. reframing Epic 1 from technical scaffold to "Marco can deploy"), not issues that exist today.
+- **Prospective 🟠 major issues** flagged _so they can be avoided during epic authoring_ (e.g. reframing Epic 1 from technical scaffold to "Marco can deploy"), not issues that exist today.
 
 ### Recommended Next Steps (in order)
 
@@ -449,7 +467,7 @@ Flagged in PRD §Scoping and §Innovation, restated here for the architect:
 
 ### Final Note
 
-This assessment identified **0 critical violations**, **0 major issues in existing artifacts**, and **3 missing downstream artifacts (Architecture, UX, Epics)**. These are *expected missing artifacts* at this position in the BMAD flow, not defects.
+This assessment identified **0 critical violations**, **0 major issues in existing artifacts**, and **3 missing downstream artifacts (Architecture, UX, Epics)**. These are _expected missing artifacts_ at this position in the BMAD flow, not defects.
 
 The PRD itself passed all applicable checks: completeness, internal traceability, measurability of FR/NFR, anti-pattern cleanliness, and dual-audience optimization. It is fit-for-purpose as the foundation for architecture, UX, and epic work.
 
@@ -457,4 +475,4 @@ The PRD itself passed all applicable checks: completeness, internal traceability
 
 ---
 
-*Assessment complete — 2026-04-19. Assessor: Opus orchestrator, Possible CMS session.*
+_Assessment complete — 2026-04-19. Assessor: Opus orchestrator, Possible CMS session._

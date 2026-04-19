@@ -3,11 +3,11 @@
 // Implementation: Epic 1.
 
 export interface ScopedQuery {
-  siteId: number
-  projectId?: number
-  workspaceId?: number
+  siteId: number;
+  projectId?: number;
+  workspaceId?: number;
 }
 
 export function siteScoped(_siteId: number) {
-  throw new Error('Not yet implemented — Epic 1.')
+  throw new Error("Not yet implemented — Epic 1.");
 }

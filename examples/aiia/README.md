@@ -3,6 +3,7 @@
 Reference implementation: AIIA's marketing site schemas + seed importer.
 
 Defines:
+
 - Page (home blocks)
 - BlogPost (MDX body + hero image + author reference)
 - DocPage

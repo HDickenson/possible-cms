@@ -16,7 +16,7 @@ inputDocuments:
   - /Users/kanousei/.claude/plans/i-want-you-to-fizzy-dove.md
   - /Users/kanousei/Documents/KPD/infrastructure/cloudflareCMS/prd-cms.md
   - /Users/kanousei/Documents/KPD/docs/plans/2026-04-18-cms-dev-plan.md
-workflowType: 'architecture'
+workflowType: "architecture"
 project_name: Possible CMS
 user_name: Kanousei
 date: 2026-04-19
@@ -68,20 +68,21 @@ _Possible CMS — Cloudflare-native, OSS, post-handover marketing CMS. This docu
 
 ### Evaluated Options
 
-| Option | Fit | Verdict |
-|--------|-----|---------|
-| `create-next-app` + manual Workers wiring | Medium — gives Next.js + TS + Tailwind, no Workers integration | Used as the basis for `apps/admin`; wiring is our responsibility |
-| `cloudflare/templates` — worker-nextjs | Medium — Cloudflare-official Next-on-Pages starter | Good reference for Pages deployment but not monorepo-shaped |
-| `measuredco/puck` starter | High for canvas — `puck/example` shows block composition | Used as the basis for the canvas implementation in `packages/blocks/` and `apps/admin/app/pages/[slug]/edit` |
-| `t3-oss/create-t3-app` | Low — T3 stack is Next + tRPC + Prisma; no Cloudflare native | Reject — Prisma conflicts with Drizzle; pg-shaped abstractions |
-| `cloudflare/d1-starter` | Low — single-worker starter with D1 | Reject — too small; we need a monorepo |
-| Build from scratch on `pnpm init` + `turbo` | High — full control, no fight against starter assumptions | **Chosen** |
+| Option                                      | Fit                                                            | Verdict                                                                                                      |
+| ------------------------------------------- | -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `create-next-app` + manual Workers wiring   | Medium — gives Next.js + TS + Tailwind, no Workers integration | Used as the basis for `apps/admin`; wiring is our responsibility                                             |
+| `cloudflare/templates` — worker-nextjs      | Medium — Cloudflare-official Next-on-Pages starter             | Good reference for Pages deployment but not monorepo-shaped                                                  |
+| `measuredco/puck` starter                   | High for canvas — `puck/example` shows block composition       | Used as the basis for the canvas implementation in `packages/blocks/` and `apps/admin/app/pages/[slug]/edit` |
+| `t3-oss/create-t3-app`                      | Low — T3 stack is Next + tRPC + Prisma; no Cloudflare native   | Reject — Prisma conflicts with Drizzle; pg-shaped abstractions                                               |
+| `cloudflare/d1-starter`                     | Low — single-worker starter with D1                            | Reject — too small; we need a monorepo                                                                       |
+| Build from scratch on `pnpm init` + `turbo` | High — full control, no fight against starter assumptions      | **Chosen**                                                                                                   |
 
 ### Decision
 
 **Build from scratch on pnpm + Turborepo.** No single starter matches the (Next.js admin + 3 Workers + 4 packages + 2 examples) monorepo shape. Starters would introduce conflicting assumptions. The plan §6 repo layout is our internal template.
 
 **Confirmed stack (versions as of 2026-04):**
+
 - TypeScript 5.6+
 - Next.js 15 (App Router) + `@cloudflare/next-on-pages` 1.13+
 - React 19
@@ -110,19 +111,20 @@ Versions pinned exactly in `package.json`; Renovate bumps weekly with CI gate.
 
 ```ts
 interface BlockConfig<P> {
-  type: string                              // globally unique block type key
-  propsSchema: z.ZodSchema<P>                // single source of truth for props shape
-  defaultProps: P                            // used when a block is added to canvas
-  render: React.FC<P>                        // used by admin preview AND public renderer
-  fields: PuckFields<P>                      // Puck right-panel editor configuration
-  icon?: React.FC                            // palette icon
-  category?: 'layout' | 'content' | 'media' | 'marketing'
+  type: string; // globally unique block type key
+  propsSchema: z.ZodSchema<P>; // single source of truth for props shape
+  defaultProps: P; // used when a block is added to canvas
+  render: React.FC<P>; // used by admin preview AND public renderer
+  fields: PuckFields<P>; // Puck right-panel editor configuration
+  icon?: React.FC; // palette icon
+  category?: "layout" | "content" | "media" | "marketing";
 }
 ```
 
 Puck `Data` JSON (`{ root, content: Block[] }`) is the canonical persistence format. D1 stores `page.blocks_json` as TEXT (SQLite JSON). At runtime, admin canvas and public renderer hydrate the same JSON through the same `<Render blocks={data} />` component. The `<Render>` component imports the block registry and dispatches `block.render` by `block.type`; unknown types → `<UnknownBlockPlaceholder />` (FR24, NFR30).
 
 **Consequences.**
+
 - Admin preview and public render are byte-identical by construction. Fixing a block render bug fixes both surfaces at once.
 - Agents introspect blocks via `GET /v1/{site}/blocks` returning `{ type, propsSchema: JSONSchema, defaultProps, category }[]`. Zod schemas serialised through `zod-to-json-schema`.
 - Per-site block whitelist (FR22) lives in `site.block_whitelist: string[] | null`. Null = all registered blocks available; array = intersection with registered set. Admin palette filters by this list.
@@ -163,6 +165,7 @@ Supporting tables: `user`, `membership(user_id, workspace_id, role)`, `agent_tok
 **Phase A seeding:** `workspace(id=1, name='default')`, `project(id=1, workspace_id=1, slug='aiia'|'barbuda'|...)`, sites populated by `possible-cms init`. Phase B: workspace-switcher UI, invite flow, RBAC enforcement.
 
 **Consequences.**
+
 - Every D1 read/write is tenant-scoped by construction. Forgetting the scope is a compile error.
 - Migration files are forward-only (NFR41). Every migration ships with a MIGRATION-NOTES.md entry + CI gate that fails when `packages/schema-kit` changes without a corresponding migration.
 - Phase B RBAC adds a `policy` layer on top of `siteScoped()` that filters allowed operations by role — no schema change required.
@@ -175,11 +178,11 @@ Supporting tables: `user`, `membership(user_id, workspace_id, role)`, `agent_tok
 
 **Decision.** Three distinct Cloudflare Workers:
 
-| Worker | Path | Protocol | Bindings |
-|--------|------|----------|----------|
-| `admin-api` | `admin.{domain}/trpc/*` | tRPC over HTTPS | D1, R2, KV, `AUTH_SECRET`, `GITHUB_CLIENT_ID/SECRET` |
-| `public-api` | `{domain}/v1/*` | REST | D1 (read-only), KV (read+write), `PUBLIC_CMS_SECRET` (for signed preview tokens) |
-| `preview` | `{domain}/_preview/*` | REST, token-gated | D1 (read-only), `PREVIEW_SECRET` |
+| Worker       | Path                    | Protocol          | Bindings                                                                         |
+| ------------ | ----------------------- | ----------------- | -------------------------------------------------------------------------------- |
+| `admin-api`  | `admin.{domain}/trpc/*` | tRPC over HTTPS   | D1, R2, KV, `AUTH_SECRET`, `GITHUB_CLIENT_ID/SECRET`                             |
+| `public-api` | `{domain}/v1/*`         | REST              | D1 (read-only), KV (read+write), `PUBLIC_CMS_SECRET` (for signed preview tokens) |
+| `preview`    | `{domain}/_preview/*`   | REST, token-gated | D1 (read-only), `PREVIEW_SECRET`                                                 |
 
 **Admin API (tRPC):** typed routers under `apps/api/src/admin-api/routers/{auth,workspace,project,site,page,record,collection,block,asset,audit,agent}.ts`. Authorisation middleware extracts either a session JWT (user) or API token (agent) and produces an `Actor = User | Agent` discriminated union. Each procedure declares required actor scope.
 
@@ -190,6 +193,7 @@ Supporting tables: `user`, `membership(user_id, workspace_id, role)`, `agent_tok
 **Shared utilities:** `packages/workers-shared/` contains tenant scoping middleware, KV key builders, auth helpers, audit writer. Compiled into each Worker bundle.
 
 **Consequences.**
+
 - Public API has zero write path to D1 — a compromised public Worker cannot corrupt data.
 - Admin/public split allows independent scaling and aggressive public caching.
 - Agent operations use the same admin-api endpoints as humans (innovation claim §1 in PRD), just with an API token Actor instead of a User session. One codebase, two identities.
@@ -221,6 +225,7 @@ The build-time exporter is implemented in `@possible-cms/cli` (`possible-cms exp
 `<Render>` is isomorphic: identical component runs in admin preview (`apps/admin`) and consumer sites. It dispatches `block.type` against the imported registry.
 
 **Consequences.**
+
 - Zero code duplication between admin canvas and consumer rendering.
 - AIIA's Astro build consumes `possible-cms export` output with no runtime dependency — the CMS can be offline and AIIA still builds.
 - Runtime mode uses standard `fetch`; works on any JS runtime (Node 20+, Edge runtimes — NFR37).
@@ -233,11 +238,11 @@ The build-time exporter is implemented in `@possible-cms/cli` (`possible-cms exp
 
 **Decision.** Environments:
 
-| Env | Cloudflare account | D1 database | R2 bucket | KV namespace | Use |
-|-----|-------------------|-------------|-----------|--------------|-----|
-| `development` | Per-developer personal account | `possible-cms-dev` | `possible-cms-dev-media` | `possible-cms-dev-kv` | Wrangler dev server on localhost |
-| `preview` | Kanousei account | `possible-cms-preview` | `possible-cms-preview-media` | `possible-cms-preview-kv` | Per-PR preview deploys |
-| `production` | Kanousei account | `possible-cms-prod` | `possible-cms-prod-media` | `possible-cms-prod-kv` | `cms.possiblecms.dev` or `cms.kanousei.com` |
+| Env           | Cloudflare account             | D1 database            | R2 bucket                    | KV namespace              | Use                                         |
+| ------------- | ------------------------------ | ---------------------- | ---------------------------- | ------------------------- | ------------------------------------------- |
+| `development` | Per-developer personal account | `possible-cms-dev`     | `possible-cms-dev-media`     | `possible-cms-dev-kv`     | Wrangler dev server on localhost            |
+| `preview`     | Kanousei account               | `possible-cms-preview` | `possible-cms-preview-media` | `possible-cms-preview-kv` | Per-PR preview deploys                      |
+| `production`  | Kanousei account               | `possible-cms-prod`    | `possible-cms-prod-media`    | `possible-cms-prod-kv`    | `cms.possiblecms.dev` or `cms.kanousei.com` |
 
 Each environment has its own `wrangler.toml` section. Secrets (`GITHUB_CLIENT_SECRET`, `AUTH_SECRET`, `PREVIEW_SECRET`, agent-token HMAC keys) configured via `wrangler secret put`. No secrets in `.dev.vars.example` (that file shows structure, not values).
 
@@ -248,6 +253,7 @@ Each environment has its own `wrangler.toml` section. Secrets (`GITHUB_CLIENT_SE
 **Monitoring.** Cloudflare Workers Analytics (built-in) for P50/P95/P99 (NFR48). Synthetic canary (hourly Worker) runs login → create page → publish → read cycle; failures emit Cloudflare Logpush alerts (NFR47).
 
 **Consequences.**
+
 - External self-hosters copy the wrangler config and fill their own account ID + secrets. No multi-tenant "customer routing" required.
 - No external secret manager required; Cloudflare Secrets is sufficient. (Infisical integration deferred to Phase D managed variant.)
 - Multi-region implicit — Workers + D1 + KV run on Cloudflare's edge by default.
@@ -465,21 +471,21 @@ possible-cms/
 
 ### Component → FR Mapping
 
-| Component | FRs covered | Epic (from readiness report) |
-|-----------|-------------|------------------------------|
-| `apps/admin/app/(auth)/login` | FR1, FR2, FR3 | Epic 2 |
-| `apps/admin/app/(authed)/agents` | FR4, FR5 | Epic 2 |
-| `apps/admin/app/(authed)/{projects,sites}` | FR9, FR10, FR12 | Epic 3 |
-| `packages/cli init` | FR11, FR55 | Epic 10 |
-| `apps/admin/components/canvas` + `packages/blocks` | FR15-FR24 | Epic 4 |
-| `apps/admin/app/(authed)/records` + `components/forms` | FR25-FR30 | Epic 5 |
-| `apps/admin/components/media` + R2/Images wiring | FR31-FR36 | Epic 6 |
-| `apps/api/src/admin-api/routers/page` + `schedule_job` + cron | FR37-FR40 | Epic 7 |
-| `apps/api/src/public-api` + `packages/sdk` | FR42-FR47, FR57-FR58 | Epic 8 |
-| `apps/api/src/admin-api` agent flows + `agent_token` | FR48-FR53 | Epic 9 |
-| `packages/cli` + `examples/*` + `packages/schema-kit` | FR54-FR59 | Epic 10 |
-| `apps/api/src/shared/audit.ts` + admin audit view + backup cron | FR61-FR63 | Epic 11 |
-| OSS polish: README, CI, E2E matrix | — | Epic 12 |
+| Component                                                       | FRs covered          | Epic (from readiness report) |
+| --------------------------------------------------------------- | -------------------- | ---------------------------- |
+| `apps/admin/app/(auth)/login`                                   | FR1, FR2, FR3        | Epic 2                       |
+| `apps/admin/app/(authed)/agents`                                | FR4, FR5             | Epic 2                       |
+| `apps/admin/app/(authed)/{projects,sites}`                      | FR9, FR10, FR12      | Epic 3                       |
+| `packages/cli init`                                             | FR11, FR55           | Epic 10                      |
+| `apps/admin/components/canvas` + `packages/blocks`              | FR15-FR24            | Epic 4                       |
+| `apps/admin/app/(authed)/records` + `components/forms`          | FR25-FR30            | Epic 5                       |
+| `apps/admin/components/media` + R2/Images wiring                | FR31-FR36            | Epic 6                       |
+| `apps/api/src/admin-api/routers/page` + `schedule_job` + cron   | FR37-FR40            | Epic 7                       |
+| `apps/api/src/public-api` + `packages/sdk`                      | FR42-FR47, FR57-FR58 | Epic 8                       |
+| `apps/api/src/admin-api` agent flows + `agent_token`            | FR48-FR53            | Epic 9                       |
+| `packages/cli` + `examples/*` + `packages/schema-kit`           | FR54-FR59            | Epic 10                      |
+| `apps/api/src/shared/audit.ts` + admin audit view + backup cron | FR61-FR63            | Epic 11                      |
+| OSS polish: README, CI, E2E matrix                              | —                    | Epic 12                      |
 
 ## 6. Architecture Validation
 
@@ -497,26 +503,28 @@ Every one of the 56 Phase-A binding FRs is assigned to a concrete component/modu
 
 ### 6.3 NFR Coverage Validation
 
-| NFR category | Architectural commitment |
-|--------------|--------------------------|
-| Performance (NFR1-7) | Cloudflare edge + KV cache + <100ms canvas interactions (Puck perf baseline) |
-| Security (NFR8-17) | ADR-002 tenant scoping middleware, ADR-003 read-only public Worker, agent token hashing, Zod at every boundary, HTTPS + HSTS default via Cloudflare |
-| Scalability (NFR18-23) | D1 capacity + partition fallback documented; KV for read scale; R2 unbounded |
-| Reliability (NFR24-30) | Nightly D1 backup (ADR-005), synthetic canary, graceful KV invalidation retry, block render placeholder |
-| Accessibility (NFR31-36) | shadcn/ui + Tailwind v4 tokens, `@axe-core/playwright` CI gate, explicit keyboard map in §4.7 conventions |
-| Integration (NFR37-41) | Dual CJS/ESM in `packages/sdk`, SDK tested against Next.js/Astro/Svelte in CI, deterministic export in CLI, semver rules |
-| Cost (NFR42-44) | Cloudflare-native stack implies free/cheap tiers; measured per-site in Phase B dashboard |
-| Observability (NFR45-49) | ADR-003 Worker analytics, structured logging convention in §4.4, audit log shape specified |
+| NFR category             | Architectural commitment                                                                                                                            |
+| ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Performance (NFR1-7)     | Cloudflare edge + KV cache + <100ms canvas interactions (Puck perf baseline)                                                                        |
+| Security (NFR8-17)       | ADR-002 tenant scoping middleware, ADR-003 read-only public Worker, agent token hashing, Zod at every boundary, HTTPS + HSTS default via Cloudflare |
+| Scalability (NFR18-23)   | D1 capacity + partition fallback documented; KV for read scale; R2 unbounded                                                                        |
+| Reliability (NFR24-30)   | Nightly D1 backup (ADR-005), synthetic canary, graceful KV invalidation retry, block render placeholder                                             |
+| Accessibility (NFR31-36) | shadcn/ui + Tailwind v4 tokens, `@axe-core/playwright` CI gate, explicit keyboard map in §4.7 conventions                                           |
+| Integration (NFR37-41)   | Dual CJS/ESM in `packages/sdk`, SDK tested against Next.js/Astro/Svelte in CI, deterministic export in CLI, semver rules                            |
+| Cost (NFR42-44)          | Cloudflare-native stack implies free/cheap tiers; measured per-site in Phase B dashboard                                                            |
+| Observability (NFR45-49) | ADR-003 Worker analytics, structured logging convention in §4.4, audit log shape specified                                                          |
 
 ### 6.4 Gap Analysis
 
 **Unresolved (flagged for implementation phase):**
+
 - **Cloudflare Images binding mechanics.** Concrete API call shape for transform-on-read pending verification; fallback is direct Cloudflare Images fetch-based transforms.
 - **Drizzle + D1 bug surface.** Drizzle 0.36 on D1 is stable but edge cases exist with complex transactions. Mitigation: prefer single-query patterns; keep transaction use minimal.
 - **Puck v0.16 React 19 compatibility** — verify at week-2 spike before committing.
 - **MDX sanitization whitelist** — exact allowed tags/attrs not specified here. Defer to `apps/admin/lib/mdx-sanitize.ts` implementation, based on `rehype-sanitize` with a constrained schema. Story authored under Epic 4.
 
 **Deferred to Phase B (explicit):**
+
 - Plugin API mechanics (FR60).
 - Versioning/revert storage strategy (FR41) — likely a `page_version` shadow table with content-hash dedup.
 - Webhook delivery mechanism (FR64) — likely Durable Object with retry semantics.

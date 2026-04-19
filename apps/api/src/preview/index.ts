@@ -21,9 +21,8 @@ export default {
     }
 
     // Preview routes — Epic 4
-    return new Response(
-      "preview: signed preview not yet wired — see Epic 4.",
-      { status: 501 },
-    );
+    return new Response("preview: signed preview not yet wired — see Epic 4.", {
+      status: 501,
+    });
   },
 };

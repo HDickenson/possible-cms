@@ -21,9 +21,8 @@ export default {
     }
 
     // REST routes — Epic 8
-    return new Response(
-      "public-api: REST routes not yet wired — see Epic 8.",
-      { status: 501 },
-    );
+    return new Response("public-api: REST routes not yet wired — see Epic 8.", {
+      status: 501,
+    });
   },
 };

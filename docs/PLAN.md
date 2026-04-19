@@ -18,24 +18,25 @@ Harold needs a CMS that is the foundation for **every** Kanousei/AIIA/client web
 
 ## 2. Locked decisions
 
-| # | Decision | Value |
-|---|----------|-------|
-| 1 | Admin UI framework | Next.js 15 App Router on Cloudflare Pages |
-| 2 | Block canvas library | **[Puck](https://github.com/measuredco/puck)** (MIT, React, JSON output) |
-| 3 | Public name | `caixo-cms` (GitHub org `aiia-caixo`) |
-| 4 | License | MIT |
-| 5 | Auth (Phase A) | GitHub OAuth → JWT; Cloudflare Access slots in Phase B |
-| 6 | Admin API | tRPC (single TS codebase); public REST stays per PRD §4.3 |
-| 7 | Multi-project posture | Generic from day 1 — `workspace`, `project`, `site` tables; AIIA seeds as `examples/aiia/` |
-| 8 | Execution model | Advisor mode — KPD plans, Kanousei Web Studio builds |
-| 9 | Storage | D1 (structured), R2 (media), KV (public read cache), Cloudflare Images (transforms) |
-| 10 | Content model | Hybrid: structured `Record { data: JSON }` for typed entities + `Page { blocks: Block[] }` for Puck-rendered composable pages |
+| #   | Decision              | Value                                                                                                                         |
+| --- | --------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| 1   | Admin UI framework    | Next.js 15 App Router on Cloudflare Pages                                                                                     |
+| 2   | Block canvas library  | **[Puck](https://github.com/measuredco/puck)** (MIT, React, JSON output)                                                      |
+| 3   | Public name           | `caixo-cms` (GitHub org `aiia-caixo`)                                                                                         |
+| 4   | License               | MIT                                                                                                                           |
+| 5   | Auth (Phase A)        | GitHub OAuth → JWT; Cloudflare Access slots in Phase B                                                                        |
+| 6   | Admin API             | tRPC (single TS codebase); public REST stays per PRD §4.3                                                                     |
+| 7   | Multi-project posture | Generic from day 1 — `workspace`, `project`, `site` tables; AIIA seeds as `examples/aiia/`                                    |
+| 8   | Execution model       | Advisor mode — KPD plans, Kanousei Web Studio builds                                                                          |
+| 9   | Storage               | D1 (structured), R2 (media), KV (public read cache), Cloudflare Images (transforms)                                           |
+| 10  | Content model         | Hybrid: structured `Record { data: JSON }` for typed entities + `Page { blocks: Block[] }` for Puck-rendered composable pages |
 
 ## 3. Architecture deltas vs existing plan
 
 Three additions on top of the AIIA-scoped plan:
 
 ### 3.1 Block layer (Elementor-style)
+
 - **New table:** `page { id, site_id, slug, locale, status, blocks_json, published_at }`. `blocks_json` is a Puck `Data` object — `{ root, content: Block[] }` — typed in `packages/schema-kit/blocks.ts`.
 - **Block registry:** `packages/blocks/` exports `BlockConfig[]` — each block is `{ type, zodProps, render, fields }`. Block render is a React component; `fields` drives Puck's right-panel props editor.
 - **Starter block set (v1):** Hero, RichText (MDX), Image, Pricing (references `PricingTier` entity), FAQ, CTA, Columns, Spacer, Embed, Testimonials. 10 blocks cover 90% of marketing pages.
@@ -43,11 +44,13 @@ Three additions on top of the AIIA-scoped plan:
 - **Persistence:** on save, Puck emits JSON → tRPC `page.save` → D1. On publish, KV key `page:{site}:{slug}:{locale}` stores rendered HTML snapshot + JSON; invalidation on republish.
 
 ### 3.2 Multi-project foundation
+
 - **New tables:** `workspace` (tenant), `project` (Kanousei/AIIA/client), `site` (marketing.aiia.io, barbudaleisuretours.com, …). Hierarchy: `workspace → project → site → page/record`.
 - **Generic init:** `caixo-cms init <project>` scaffolds `examples/<project>/` with Zod schemas, block whitelist, seed JSON. No AIIA hardcoding anywhere in core.
 - **Site-scoped schemas:** each `site` picks a schema bundle from `examples/` or its own `content/schema.ts`. Core ships a `base` bundle (Page, BlogPost, Author, Media) that any site inherits.
 
 ### 3.3 OSS minimum viable cut
+
 - `README.md` with 5-minute quickstart: clone, `pnpm install`, `wrangler deploy`, open admin, drag blocks.
 - `examples/aiia/` and `examples/barbuda/` to prove reusability (Barbuda is the second consumer test).
 - `CONTRIBUTING.md`, MIT `LICENSE`, `CODE_OF_CONDUCT.md`, GitHub Issue templates.
@@ -57,13 +60,13 @@ Three additions on top of the AIIA-scoped plan:
 
 Claude-Code (this session, Sonnet/Haiku models) runs the strategy loop. PaperclipAI Kanousei Web Studio agents do the code. Division of labour:
 
-| Phase | Claude-Code (advisor) | Kanousei Web Studio |
-|-------|----------------------|---------------------|
-| Spec | `/bmad-create-prd` refresh PRD for block layer + multi-project. `/bmad-architect` produces ADRs for block schema, Puck integration, D1 migrations. | — |
-| Scaffold | `/bmad-create-epics-and-stories` breaks Phase A into 6 epics, ~30 stories, each with acceptance criteria. | CEO/PM triage epics → assign to Frontend Dev, Backend Dev, QA. |
-| Build | `/bmad-review-adversarial-general` + `/review` on every PR before merge. | Implement stories, open PRs against `main`. |
-| QA | `/aegis:audit` at end of each phase. `/qa` on admin UI. | QA agent runs Playwright E2E on admin + renderer. |
-| Ship | `/ship` workflow with CHANGELOG + semver. | CI deploys Workers + Pages; PM updates ERPNext. |
+| Phase    | Claude-Code (advisor)                                                                                                                              | Kanousei Web Studio                                            |
+| -------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| Spec     | `/bmad-create-prd` refresh PRD for block layer + multi-project. `/bmad-architect` produces ADRs for block schema, Puck integration, D1 migrations. | —                                                              |
+| Scaffold | `/bmad-create-epics-and-stories` breaks Phase A into 6 epics, ~30 stories, each with acceptance criteria.                                          | CEO/PM triage epics → assign to Frontend Dev, Backend Dev, QA. |
+| Build    | `/bmad-review-adversarial-general` + `/review` on every PR before merge.                                                                           | Implement stories, open PRs against `main`.                    |
+| QA       | `/aegis:audit` at end of each phase. `/qa` on admin UI.                                                                                            | QA agent runs Playwright E2E on admin + renderer.              |
+| Ship     | `/ship` workflow with CHANGELOG + semver.                                                                                                          | CI deploys Workers + Pages; PM updates ERPNext.                |
 
 **Skill invocations used in this session:** `bmad-create-prd`, `bmad-architect`, `bmad-create-epics-and-stories`, `bmad-pm`, `review`, `aegis:audit`, `plan-ceo-review`, `plan-eng-review`, `plan-design-review`.
 
@@ -72,6 +75,7 @@ Claude-Code (this session, Sonnet/Haiku models) runs the strategy loop. Papercli
 ## 5. Milestones (6 weeks, supersedes the 4-week AIIA plan)
 
 ### Week 1 — Spec + scaffold
+
 - Refresh PRD with block layer + multi-project sections (advisor: `bmad-create-prd`).
 - ADR-001 block schema, ADR-002 Puck integration, ADR-003 D1 migration strategy.
 - Create `aiia-caixo/cms` repo, MIT license, PNPM workspace: `apps/admin`, `apps/api`, `packages/{sdk, schema-kit, blocks}`, `examples/{aiia, barbuda}`.
@@ -80,6 +84,7 @@ Claude-Code (this session, Sonnet/Haiku models) runs the strategy loop. Papercli
 - **Demo:** `wrangler deploy` succeeds; admin route `/login` renders; D1 schema applied.
 
 ### Week 2 — Auth + admin shell + block registry
+
 - GitHub OAuth → JWT session. Protected tRPC router.
 - Admin shell (shadcn/ui, TanStack Table): workspace/project/site switcher, list views for Pages and Records.
 - `packages/blocks/`: 10 starter blocks with Zod prop schemas + React render + Puck `fields` config.
@@ -87,6 +92,7 @@ Claude-Code (this session, Sonnet/Haiku models) runs the strategy loop. Papercli
 - **Demo:** engineer drags Hero + FAQ into a blank page, edits headline, saves; reload returns identical JSON.
 
 ### Week 3 — Records (schema-driven forms) + media
+
 - Schema-driven form generator reading Zod schemas (reuses PRD §4.2 approach).
 - R2 upload flow: signed PUT URL → `asset` table row → Cloudflare Images transform on read.
 - Media library modal, invoked from block prop editors (Image block, Hero background).
@@ -94,6 +100,7 @@ Claude-Code (this session, Sonnet/Haiku models) runs the strategy loop. Papercli
 - **Demo:** content admin creates a BlogPost record, uploads hero image, links an Author.
 
 ### Week 4 — Publish + public API + renderer SDK
+
 - Publish state machine: `draft → scheduled → live → archived`. Scheduler = cron-triggered Worker.
 - Public REST API on `public-api` Worker: `GET /v1/{site}/pages/{slug}` returns rendered HTML + JSON blocks; `GET /v1/{site}/{collection}/{slug}` for records. KV-cached 5-min TTL.
 - `@caixo-cms/sdk` runtime client: `createClient({ endpoint, site }).getPage(slug)` returns `{ blocks, meta }` plus `<Render />` component for Next.js/Astro.
@@ -101,12 +108,14 @@ Claude-Code (this session, Sonnet/Haiku models) runs the strategy loop. Papercli
 - **Demo:** publish a page through admin; public API serves it; sample Next.js site renders identical HTML to admin preview.
 
 ### Week 5 — AIIA + Barbuda seed, multi-project proof
+
 - `examples/aiia/`: Zod schemas for Page, BlogPost, PricingPhase, PricingTier, Integration, Author, Testimonial, FAQ, Legal, DocPage. Seed importer reads [/Users/kanousei/Dropbox/Production/website/src/content/](/Users/kanousei/Dropbox/Production/website/src/content/).
 - `examples/barbuda/`: second project proves generic init — Tour, Operator, Booking, Review schemas. Seed from existing Barbuda Leisure D1 → caixo-cms D1.
 - `caixo-cms init <project>` CLI: scaffolds new `examples/<project>/` from a template.
 - **Demo:** two independent sites (AIIA + Barbuda) served from the same CMS deploy, each with its own schema bundle.
 
 ### Week 6 — Hardening, OSS polish, v0.1 release
+
 - Backup: D1 nightly dump to R2; documented restore.
 - Audit log: every mutation logged with `{user_id, action, record_id, diff, timestamp}`.
 - E2E test matrix: auth, block canvas CRUD, record CRUD, publish, export, multi-site.
@@ -156,18 +165,19 @@ Claude-Code and PaperclipAI agents should reference these before writing code:
 
 ## 8. Risks
 
-| Risk | Mitigation |
-|------|-----------|
-| Puck doesn't cover a needed UX pattern (e.g. nested drag-drop regions) | Puck supports `DropZone` for nested regions; spike in week 2 day 1 before committing. If blocker: fork Puck or fall back to structured forms for edge cases. |
-| Block prop Zod schemas drift from render components | Single source: generate TS types from Zod, render component props are `z.infer<typeof propsSchema>`. Compile-time enforced. |
-| Multi-project tables over-engineer MVP | Keep `workspace/project/site` tables flat (no RBAC, no cross-site refs) in Phase A. Hierarchy is cheap; enforcement is expensive and deferred. |
-| Advisor-mode throughput bottlenecks on PaperclipAI agent availability | Budget 20% slack per milestone; fall back to hybrid mode (Claude-Code scaffolds, Web Studio fills) if a week slips >2 days. |
-| OSS release exposes AIIA-specific assumptions | Hard rule: no string literal `aiia` in `apps/`, `packages/`, or `migrations/`. Grep-gate in CI. |
-| Notebooklm CLI broken (missing pygments) blocks research | Noted in §9. Either `pip install pygments` in the venv or run research via `/notebook` skill (which uses a different backend). Not a blocker — research is Sonnet/Haiku advisor-driven anyway. |
+| Risk                                                                   | Mitigation                                                                                                                                                                                     |
+| ---------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Puck doesn't cover a needed UX pattern (e.g. nested drag-drop regions) | Puck supports `DropZone` for nested regions; spike in week 2 day 1 before committing. If blocker: fork Puck or fall back to structured forms for edge cases.                                   |
+| Block prop Zod schemas drift from render components                    | Single source: generate TS types from Zod, render component props are `z.infer<typeof propsSchema>`. Compile-time enforced.                                                                    |
+| Multi-project tables over-engineer MVP                                 | Keep `workspace/project/site` tables flat (no RBAC, no cross-site refs) in Phase A. Hierarchy is cheap; enforcement is expensive and deferred.                                                 |
+| Advisor-mode throughput bottlenecks on PaperclipAI agent availability  | Budget 20% slack per milestone; fall back to hybrid mode (Claude-Code scaffolds, Web Studio fills) if a week slips >2 days.                                                                    |
+| OSS release exposes AIIA-specific assumptions                          | Hard rule: no string literal `aiia` in `apps/`, `packages/`, or `migrations/`. Grep-gate in CI.                                                                                                |
+| Notebooklm CLI broken (missing pygments) blocks research               | Noted in §9. Either `pip install pygments` in the venv or run research via `/notebook` skill (which uses a different backend). Not a blocker — research is Sonnet/Haiku advisor-driven anyway. |
 
 ## 9. Support tooling — current state (user chose "skip" for now)
 
 Captured so the next session knows:
+
 - **notebooklm CLI** at `/Users/kanousei/Documents/KPD/venv/bin/notebooklm` crashes on import (`pygments` missing). Fix with `./venv/bin/pip install pygments` when needed. `/notebook` skill works independently.
 - **Obsidian vault** for CMS docs: no `~/vaults/` exists. When needed, create `~/vaults/caixo-cms/` and point `/graphify --obsidian-dir` at it. Obsidian app is installed (`/opt/homebrew/bin/obsidian`).
 - **graphify** skill ready. Recommended first run (deferred): `/graphify /Users/kanousei/Documents/KPD/infrastructure/cloudflareCMS --mode deep --obsidian` once the block ADRs are written, to give advisor agents a semantic index of architecture decisions.

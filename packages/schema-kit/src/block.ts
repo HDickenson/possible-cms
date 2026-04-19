@@ -5,19 +5,21 @@
 //
 // Implementation: Epic 4.
 
-import type { z, ZodSchema } from 'zod'
-import type { ComponentType, ReactNode } from 'react'
+import type { z, ZodSchema } from "zod";
+import type { ComponentType, ReactNode } from "react";
 
 export interface BlockConfig<TProps = Record<string, unknown>> {
-  type: string
-  propsSchema: ZodSchema<TProps>
-  defaultProps: TProps
-  render: ComponentType<TProps>
-  fields: unknown // Puck Fields<TProps> — typed once Puck is wired up
-  icon?: ComponentType
-  category?: 'layout' | 'content' | 'media' | 'marketing'
+  type: string;
+  propsSchema: ZodSchema<TProps>;
+  defaultProps: TProps;
+  render: ComponentType<TProps>;
+  fields: unknown; // Puck Fields<TProps> — typed once Puck is wired up
+  icon?: ComponentType;
+  category?: "layout" | "content" | "media" | "marketing";
 }
 
-export function block<TProps>(config: BlockConfig<TProps>): BlockConfig<TProps> {
-  return config
+export function block<TProps>(
+  config: BlockConfig<TProps>,
+): BlockConfig<TProps> {
+  return config;
 }

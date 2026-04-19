@@ -3,6 +3,7 @@
 Reference implementation #2: Barbuda Leisure Tours marketing site. Proves that the core is generic by a second consumer passing no AIIA-specific assumptions.
 
 Defines:
+
 - Page
 - Tour (title, description, duration, price, hero image, operator ref, reviews ref)
 - Operator

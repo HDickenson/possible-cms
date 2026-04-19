@@ -15,16 +15,16 @@ Email harold@kanousei.com. Do not file public issues for security problems.
 
 ## Mitigations
 
-| Threat | Mitigation | Reference |
-|--------|-----------|-----------|
-| SQL injection | Drizzle parameterised queries only; no string-concatenated SQL | ADR-002, NFR13 |
-| XSS via MDX | `rehype-sanitize` with tag/attr whitelist; React default escape | NFR14 |
-| Tenant leakage | `siteScoped()` middleware; queries without `site_id` fail at the ORM layer | ADR-002, NFR12 |
-| Credential theft | Cloudflare Secrets only; no secrets in `.dev.vars` committed to repo | ADR-005, NFR11 |
-| Agent token abuse | Scoped tokens (fine-grained capability); hashed at rest; revocable within 60 s globally | ADR-003, NFR9 |
-| Replay attacks on preview tokens | 5-minute HMAC-signed TTL; one-time where feasible | ADR-003, FR46 |
-| Dependency supply chain | pnpm lockfile; exact version pinning; weekly Renovate; Dependabot; Semgrep | NFR15, NFR17 |
-| Broken access control | Type-enforced via `protectedProcedure` / `agentProcedure` discriminated actor union | ADR-003 |
+| Threat                           | Mitigation                                                                              | Reference      |
+| -------------------------------- | --------------------------------------------------------------------------------------- | -------------- |
+| SQL injection                    | Drizzle parameterised queries only; no string-concatenated SQL                          | ADR-002, NFR13 |
+| XSS via MDX                      | `rehype-sanitize` with tag/attr whitelist; React default escape                         | NFR14          |
+| Tenant leakage                   | `siteScoped()` middleware; queries without `site_id` fail at the ORM layer              | ADR-002, NFR12 |
+| Credential theft                 | Cloudflare Secrets only; no secrets in `.dev.vars` committed to repo                    | ADR-005, NFR11 |
+| Agent token abuse                | Scoped tokens (fine-grained capability); hashed at rest; revocable within 60 s globally | ADR-003, NFR9  |
+| Replay attacks on preview tokens | 5-minute HMAC-signed TTL; one-time where feasible                                       | ADR-003, FR46  |
+| Dependency supply chain          | pnpm lockfile; exact version pinning; weekly Renovate; Dependabot; Semgrep              | NFR15, NFR17   |
+| Broken access control            | Type-enforced via `protectedProcedure` / `agentProcedure` discriminated actor union     | ADR-003        |
 
 ## Audit
 

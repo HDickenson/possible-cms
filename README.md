@@ -2,7 +2,7 @@
 
 > Cloudflare-native, open-source CMS designed for the post-handover phase of AI-delivered websites. Agents build the site structure and register blocks; non-technical owners maintain content through an Elementor-style visual canvas — no tickets, no devs, no CMS training.
 
-**Status:** Pre-v0.1 (Phase A in progress)  ·  **License:** MIT  ·  **Stack:** Cloudflare D1 · R2 · KV · Workers · Pages · Next.js 15 · Puck · Zod · tRPC
+**Status:** Pre-v0.1 (Phase A in progress) · **License:** MIT · **Stack:** Cloudflare D1 · R2 · KV · Workers · Pages · Next.js 15 · Puck · Zod · tRPC
 
 ---
 
@@ -37,7 +37,7 @@ Possible CMS manages the **marketing content and page structure** of sites. It d
 
 ### Distinguishing features
 
-1. **Cloudflare-first** — D1 *is* the database, R2 *is* media, KV *is* cache, Workers *is* runtime. No adapters.
+1. **Cloudflare-first** — D1 _is_ the database, R2 _is_ media, KV _is_ cache, Workers _is_ runtime. No adapters.
 2. **Block canvas for editors** — drag-drop composition via Puck; schema-driven per-block prop editor; single source of truth between admin preview and public render.
 3. **Agent API** — same tRPC/REST surface for humans and agents; scoped API tokens with idempotent record writes.
 4. **Multi-project from day 1** — `workspace → project → site → page/record` hierarchy. AIIA and Barbuda ship as reference examples.

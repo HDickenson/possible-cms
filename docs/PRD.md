@@ -43,7 +43,7 @@ classification:
   complexity: medium
   projectContext: brownfield
   distributionPosture: oss-first-self-host
-workflowType: 'prd'
+workflowType: "prd"
 project_name: Possible CMS
 user_name: Kanousei
 date: 2026-04-19
@@ -66,12 +66,12 @@ date: 2026-04-19
 8. **Project Scoping & Phased Development** — execution model (Opus orchestrator + Sonnet/Haiku workers), must-haves, phased rationale
 9. **Functional Requirements** — 64 FRs across 10 capability areas (binding capability contract for v0.1)
 10. **Non-Functional Requirements** — 49 NFRs across 8 quality dimensions (measurable SLOs)
-11. **Scope Boundaries** — what the CMS does *not* own (AIIA admin, consumer product admins, runtime business logic)
+11. **Scope Boundaries** — what the CMS does _not_ own (AIIA admin, consumer product admins, runtime business logic)
 
 ## Executive Summary
 
 > **Scope Boundary — Possible CMS vs AIIA Admin.**
-> Possible CMS manages the **marketing content and page structure** of sites (including AIIA's marketing site). It does **not** manage AIIA product-admin concerns: end-user accounts, licence keys, Intent API configuration, model routing, usage metering, billing, or any other runtime-product data. AIIA's product admin is a separate application with a separate data model, deployment, and lifecycle. The only AIIA entities the CMS is aware of are marketing artefacts — pages, blog posts, pricing *display* tiles, FAQs, testimonials, integration logos, authors, legal pages, doc pages. The CMS never reads from, writes to, or depends on AIIA's product database. Other AIIA product surfaces (customer dashboards, integration consoles, admin panels) are out of scope for Possible CMS. The same boundary applies to every other consumer project.
+> Possible CMS manages the **marketing content and page structure** of sites (including AIIA's marketing site). It does **not** manage AIIA product-admin concerns: end-user accounts, licence keys, Intent API configuration, model routing, usage metering, billing, or any other runtime-product data. AIIA's product admin is a separate application with a separate data model, deployment, and lifecycle. The only AIIA entities the CMS is aware of are marketing artefacts — pages, blog posts, pricing _display_ tiles, FAQs, testimonials, integration logos, authors, legal pages, doc pages. The CMS never reads from, writes to, or depends on AIIA's product database. Other AIIA product surfaces (customer dashboards, integration consoles, admin panels) are out of scope for Possible CMS. The same boundary applies to every other consumer project.
 
 Possible CMS is a Cloudflare-native, open-source content management system purpose-built for the **post-handover** phase of AI-delivered websites. Agents and developers assemble the site structure and register block types; non-technical owners then maintain content indefinitely through an Elementor-style visual canvas — no tickets, no devs, no CMS training. The product resolves every architectural and UX decision toward a single outcome: making ongoing content maintenance the cheap, low-friction phase of a website's lifecycle instead of the expensive bottleneck it is today.
 
@@ -79,7 +79,7 @@ The primary user is the marketer, ops lead, or founder who inherits a finished s
 
 ### What Makes This Special
 
-**Cloudflare-first foundation, not a deploy target.** Competitors bolt Cloudflare on as an output; Possible CMS *starts* there. D1 is the database, R2 is media storage, KV is public-read cache, Workers are runtime, Cloudflare Images is the transform layer, Pages hosts the admin. No adapters, no rewrites to get edge economics — this is the only CMS where every primitive maps directly to a Cloudflare product.
+**Cloudflare-first foundation, not a deploy target.** Competitors bolt Cloudflare on as an output; Possible CMS _starts_ there. D1 is the database, R2 is media storage, KV is public-read cache, Workers are runtime, Cloudflare Images is the transform layer, Pages hosts the admin. No adapters, no rewrites to get edge economics — this is the only CMS where every primitive maps directly to a Cloudflare product.
 
 **Post-handover hero user.** The admin UX is tuned for the non-technical owner editing content after the agency leaves, not for the developer building the site. This is enforced by a compose-don't-author ceiling: editors drag pre-registered blocks onto pages and fill in props; they never see a block-authoring surface. That single scope constraint eliminates the UX complexity that bloats competing visual builders (GrapesJS, WordPress page-builders) and keeps v1 shippable in six weeks.
 
@@ -89,42 +89,47 @@ The primary user is the marketer, ops lead, or founder who inherits a finished s
 
 ## Project Classification
 
-| Dimension | Value |
-|-----------|-------|
-| Project Type (primary) | `saas_b2b` — multi-tenant platform shape (`workspace → project → site`), admin dashboard, RBAC roadmap, subscription-ready architecture |
-| Project Type (secondary) | `developer_tool` — `@possible-cms/sdk` runtime + build-time client, `possible-cms init\|export` CLI, `packages/blocks` registry, npm distribution |
-| Domain | `general` — no regulated industry; standard concerns (security, UX, performance, accessibility) apply |
-| Complexity | medium — CMS domain is well-trodden, but Cloudflare-edge multi-tenancy + Puck canvas + multi-project + OSS surface push above low; absence of regulatory load keeps it below high |
-| Project Context | brownfield — existing PRD ([infrastructure/cloudflareCMS/prd-cms.md](/Users/kanousei/Documents/KPD/infrastructure/cloudflareCMS/prd-cms.md)), prior AIIA-scoped dev plan ([docs/plans/2026-04-18-cms-dev-plan.md](/Users/kanousei/Documents/KPD/docs/plans/2026-04-18-cms-dev-plan.md)), and approved universal + Elementor-style plan (`~/.claude/plans/i-want-you-to-fizzy-dove.md`) all loaded and being refreshed |
-| Distribution Posture | OSS-first, self-host is the product (MIT license); hosted/managed variant deferred to Phase D |
-| Repo name (locked) | `kanousei/possible-cms` on GitHub — supersedes earlier `aiia-caixo/caixo-cms` from the approved plan |
+| Dimension                | Value                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Project Type (primary)   | `saas_b2b` — multi-tenant platform shape (`workspace → project → site`), admin dashboard, RBAC roadmap, subscription-ready architecture                                                                                                                                                                                                                                                                               |
+| Project Type (secondary) | `developer_tool` — `@possible-cms/sdk` runtime + build-time client, `possible-cms init\|export` CLI, `packages/blocks` registry, npm distribution                                                                                                                                                                                                                                                                     |
+| Domain                   | `general` — no regulated industry; standard concerns (security, UX, performance, accessibility) apply                                                                                                                                                                                                                                                                                                                 |
+| Complexity               | medium — CMS domain is well-trodden, but Cloudflare-edge multi-tenancy + Puck canvas + multi-project + OSS surface push above low; absence of regulatory load keeps it below high                                                                                                                                                                                                                                     |
+| Project Context          | brownfield — existing PRD ([infrastructure/cloudflareCMS/prd-cms.md](/Users/kanousei/Documents/KPD/infrastructure/cloudflareCMS/prd-cms.md)), prior AIIA-scoped dev plan ([docs/plans/2026-04-18-cms-dev-plan.md](/Users/kanousei/Documents/KPD/docs/plans/2026-04-18-cms-dev-plan.md)), and approved universal + Elementor-style plan (`~/.claude/plans/i-want-you-to-fizzy-dove.md`) all loaded and being refreshed |
+| Distribution Posture     | OSS-first, self-host is the product (MIT license); hosted/managed variant deferred to Phase D                                                                                                                                                                                                                                                                                                                         |
+| Repo name (locked)       | `kanousei/possible-cms` on GitHub — supersedes earlier `aiia-caixo/caixo-cms` from the approved plan                                                                                                                                                                                                                                                                                                                  |
 
 ## Success Criteria
 
 ### User Success
 
 **Post-handover admin (hero user):**
+
 - Edits a page block (copy + image swap) in **under 2 minutes** without dev assistance, measured from landing on admin to published-live.
 - **Zero support tickets** opened to the agency during normal content ops (copy, images, block reorder, new blog post) in the first 30 days post-handover. Target: 90% of client projects hit zero.
 - First-session activation: on first login, publishes a meaningful content change (not a test) within **15 minutes**, without reading docs.
 
 **Developer / AI agent (secondary):**
+
 - Scaffolds a new `examples/<project>/` schema bundle and gets a working admin for it in **under 1 day** of work.
 - Registers a new block type (Zod schema + React render + Puck fields) in **under 1 hour**.
 
 ### Business Success
 
 **Internal adoption (3-month):**
+
 - AIIA marketing site consumes Possible CMS (build-time mode) in production within **8 weeks** of repo creation.
 - Barbuda Leisure Tours (project #2) migrated onto Possible CMS within **12 weeks**.
 - Sunstone Phase 2 onboarded by **week 16** (replaces the TinaCMS plan in the Sunstone memory).
 
 **OSS traction (12-month):**
+
 - **100 GitHub stars** on `kanousei/possible-cms` by month 6.
 - **5 external self-hosted deployments** confirmed (GitHub discussions or Cloudflare Workers analytics) by month 12.
 - **1 external contributor PR merged** by month 9.
 
 **Cost / lifecycle (ongoing):**
+
 - Content maintenance hours per client-month drops to **<2 hours/client** (baseline: 6–8 hours/client/month today on direct agent editing).
 - Marginal infrastructure cost per site: **<$1/month** on Cloudflare free/paid tiers at <100k monthly page views.
 
@@ -140,17 +145,17 @@ The primary user is the marketer, ops lead, or founder who inherits a finished s
 
 ### Measurable Outcomes
 
-| Metric | Target | Measured by |
-|--------|--------|-------------|
-| Time to first content edit (new editor) | <15 min | Admin audit log timestamps |
-| Edit → live latency P95 | <30 s | Worker analytics |
-| Public API P95 | <100 ms | Cloudflare Web Analytics |
-| Tickets/client/month (content ops) | 0 | Manual log for first 5 clients |
-| Projects onboarded | 3 (AIIA, Barbuda, Sunstone) by month 4 | Repo + production deploys |
-| GitHub stars | 100 by month 6 | GitHub API |
-| External deploys | 5 by month 12 | Analytics + GitHub issues |
-| Cost per site | <$1/mo at 100k PV | Cloudflare billing |
-| D1 data-loss incidents | 0 | Incident log |
+| Metric                                  | Target                                 | Measured by                    |
+| --------------------------------------- | -------------------------------------- | ------------------------------ |
+| Time to first content edit (new editor) | <15 min                                | Admin audit log timestamps     |
+| Edit → live latency P95                 | <30 s                                  | Worker analytics               |
+| Public API P95                          | <100 ms                                | Cloudflare Web Analytics       |
+| Tickets/client/month (content ops)      | 0                                      | Manual log for first 5 clients |
+| Projects onboarded                      | 3 (AIIA, Barbuda, Sunstone) by month 4 | Repo + production deploys      |
+| GitHub stars                            | 100 by month 6                         | GitHub API                     |
+| External deploys                        | 5 by month 12                          | Analytics + GitHub issues      |
+| Cost per site                           | <$1/mo at 100k PV                      | Cloudflare billing             |
+| D1 data-loss incidents                  | 0                                      | Incident log                   |
 
 ## Product Scope
 
@@ -257,23 +262,23 @@ The primary user is the marketer, ops lead, or founder who inherits a finished s
 
 The four journeys reveal these capability clusters, each backed by at least one journey:
 
-| Capability | Revealed by |
-|------------|-------------|
-| Puck canvas: drag, reorder, props-edit, live preview | Priya happy path |
-| Schedule-to-publish with timezone awareness | Priya happy path |
-| GitHub OAuth auth (users) + API tokens (agents) | Priya, Atlas |
-| R2 upload with size validation + Cloudflare Images resize | Priya edge case |
-| Human-readable error toasts + recovery actions | Priya edge case |
-| Media library with metadata | Priya edge case |
-| `possible-cms init <project>` CLI with starter bundles | Marco |
-| One-command `wrangler deploy` from fresh clone (<10 min) | Marco |
-| Hot-reload of schema changes into admin | Marco |
-| Extensible block registry scoped per-site | Marco, Atlas |
-| Default styling before theming | Marco |
-| Introspection API for schemas + collections | Atlas |
-| Idempotent record writes with agent-scoped audit log | Atlas |
-| Site-scoped API tokens with fine-grained scopes | Atlas |
-| CI-on-merge deploy pipeline | Marco, Atlas |
+| Capability                                                | Revealed by      |
+| --------------------------------------------------------- | ---------------- |
+| Puck canvas: drag, reorder, props-edit, live preview      | Priya happy path |
+| Schedule-to-publish with timezone awareness               | Priya happy path |
+| GitHub OAuth auth (users) + API tokens (agents)           | Priya, Atlas     |
+| R2 upload with size validation + Cloudflare Images resize | Priya edge case  |
+| Human-readable error toasts + recovery actions            | Priya edge case  |
+| Media library with metadata                               | Priya edge case  |
+| `possible-cms init <project>` CLI with starter bundles    | Marco            |
+| One-command `wrangler deploy` from fresh clone (<10 min)  | Marco            |
+| Hot-reload of schema changes into admin                   | Marco            |
+| Extensible block registry scoped per-site                 | Marco, Atlas     |
+| Default styling before theming                            | Marco            |
+| Introspection API for schemas + collections               | Atlas            |
+| Idempotent record writes with agent-scoped audit log      | Atlas            |
+| Site-scoped API tokens with fine-grained scopes           | Atlas            |
+| CI-on-merge deploy pipeline                               | Marco, Atlas     |
 
 Deliberately **not** included (OSS consumer journey): installing externally for a personal project. That journey is covered by the Marco journey's first 30 minutes — if Marco's flow works, the OSS hobbyist's flow works. Adding it would duplicate.
 
@@ -282,24 +287,24 @@ Deliberately **not** included (OSS consumer journey): installing externally for 
 ### Detected Innovation Areas
 
 **1. AI agents as first-class users, not afterthought integrations.**
-Every existing CMS (Sanity, Payload, Strapi, Directus, WordPress) models humans as primary users and exposes a "headless API" as a secondary surface for machines. Possible CMS inverts the default: the same tRPC/REST API is the *shared substrate* for humans-via-admin and agents-via-SDK. Agents get distinct auth (scoped API tokens), distinct identity in the audit log (`agent_id` vs `user_id`), and an introspection endpoint that exposes schema, block registry, and collection structure machine-readably. The Atlas journey isn't a novelty path — it's the same path Priya uses, with a different credential. This matters because the actual lifecycle of a client site increasingly involves both: humans edit copy, agents change structure. Treating them as peer users eliminates the "we need a different tool for AI updates" category of problem.
+Every existing CMS (Sanity, Payload, Strapi, Directus, WordPress) models humans as primary users and exposes a "headless API" as a secondary surface for machines. Possible CMS inverts the default: the same tRPC/REST API is the _shared substrate_ for humans-via-admin and agents-via-SDK. Agents get distinct auth (scoped API tokens), distinct identity in the audit log (`agent_id` vs `user_id`), and an introspection endpoint that exposes schema, block registry, and collection structure machine-readably. The Atlas journey isn't a novelty path — it's the same path Priya uses, with a different credential. This matters because the actual lifecycle of a client site increasingly involves both: humans edit copy, agents change structure. Treating them as peer users eliminates the "we need a different tool for AI updates" category of problem.
 
 **2. Post-handover workflow as the product's measurable promise.**
-Competing CMSs sell themselves on authoring ergonomics or developer experience. Possible CMS sells *what happens after launch*: zero tickets in the first 30 days of normal content ops, <2 minutes to edit-and-publish, <30s edit-to-live propagation. These are workflow SLOs, not feature claims. Nothing structurally prevents a competitor from claiming this, but none does — because their UX is built for the build phase, not the post-build phase, and retrofitting that emphasis is hard. The compose-don't-author ceiling is the scope discipline that makes the promise achievable.
+Competing CMSs sell themselves on authoring ergonomics or developer experience. Possible CMS sells _what happens after launch_: zero tickets in the first 30 days of normal content ops, <2 minutes to edit-and-publish, <30s edit-to-live propagation. These are workflow SLOs, not feature claims. Nothing structurally prevents a competitor from claiming this, but none does — because their UX is built for the build phase, not the post-build phase, and retrofitting that emphasis is hard. The compose-don't-author ceiling is the scope discipline that makes the promise achievable.
 
 **3. Cloudflare primitive mapping as the architectural commitment.**
-Existing "Cloudflare-compatible" CMSs treat Cloudflare as a deploy target — you get Workers hosting, but the DB is Postgres (external), media is S3 (external), cache is Redis (external). Possible CMS maps directly: D1 *is* the DB, R2 *is* the media store, KV *is* the public read cache, Workers AI *is* available in the runtime for future semantic/agent features, Cloudflare Images *is* the transform. Cost drops roughly an order of magnitude (single-digit dollars per site per month at 100k PV) because there are no external dependencies. This is an economically novel position even if each individual primitive is mundane.
+Existing "Cloudflare-compatible" CMSs treat Cloudflare as a deploy target — you get Workers hosting, but the DB is Postgres (external), media is S3 (external), cache is Redis (external). Possible CMS maps directly: D1 _is_ the DB, R2 _is_ the media store, KV _is_ the public read cache, Workers AI _is_ available in the runtime for future semantic/agent features, Cloudflare Images _is_ the transform. Cost drops roughly an order of magnitude (single-digit dollars per site per month at 100k PV) because there are no external dependencies. This is an economically novel position even if each individual primitive is mundane.
 
 ### Market Context & Competitive Landscape
 
-| Incumbent | Strength | Why they can't easily copy |
-|-----------|----------|---------------------------|
-| **WordPress / Elementor** | Massive ecosystem, plugin market, editor UX | Architected for PHP+MySQL; Cloudflare play means rewrite, not adapter |
-| **Webflow** | Best-in-class visual builder, designer-friendly | Proprietary hosting, no self-host, no OSS, no AI-native API |
-| **Sanity** | Headless quality, Portable Text | No Cloudflare-native path, no visual canvas for editors, SaaS-first |
-| **Payload CMS** | TS-first, OSS, rich block support | MongoDB/Postgres dependency, no Cloudflare-native primitives |
-| **Directus / Strapi** | Generalist OSS headless | Same DB dependency; not block-canvas-first |
-| **Sanity + Vercel / Payload + Vercel** | Modern stacks | Vercel economics ≠ Cloudflare economics; not agent-first |
+| Incumbent                              | Strength                                        | Why they can't easily copy                                            |
+| -------------------------------------- | ----------------------------------------------- | --------------------------------------------------------------------- |
+| **WordPress / Elementor**              | Massive ecosystem, plugin market, editor UX     | Architected for PHP+MySQL; Cloudflare play means rewrite, not adapter |
+| **Webflow**                            | Best-in-class visual builder, designer-friendly | Proprietary hosting, no self-host, no OSS, no AI-native API           |
+| **Sanity**                             | Headless quality, Portable Text                 | No Cloudflare-native path, no visual canvas for editors, SaaS-first   |
+| **Payload CMS**                        | TS-first, OSS, rich block support               | MongoDB/Postgres dependency, no Cloudflare-native primitives          |
+| **Directus / Strapi**                  | Generalist OSS headless                         | Same DB dependency; not block-canvas-first                            |
+| **Sanity + Vercel / Payload + Vercel** | Modern stacks                                   | Vercel economics ≠ Cloudflare economics; not agent-first              |
 
 Possible CMS sits in a white-space: **Cloudflare-native + visual-canvas + agent-as-peer + post-handover-focused + OSS**. Each of those is available individually somewhere; the combination isn't.
 
@@ -313,20 +318,20 @@ Each claim has a concrete, early test built into the Phase A milestones:
 
 ### Risk Mitigation
 
-| Innovation risk | Fallback |
-|----------------|----------|
+| Innovation risk                                                                           | Fallback                                                                                                                                                                 |
+| ----------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | Agents-as-peers API surface proves unsafe (agent credentials leak, blast radius too wide) | Fine-grained token scopes per operation class (`read:*`, `write:content`, `write:schema`, `publish`); fall back to human approval gate for schema writes in v1 if needed |
-| Post-handover SLO unmeetable because editors still confuse on edge cases | Ship with a Loom-based quickstart per project; add contextual help in the admin; don't make the 30-day-zero-tickets claim public until 5 clients validate it |
-| D1 hits scale limits earlier than expected (10 GB, 1 billion reads/day) | Partition strategy: one D1 per workspace at scale; document cutover path; add Turso or Postgres adapter as escape hatch in Phase C |
-| Puck becomes abandoned or pivots away from OSS | Fork in `packages/blocks/puck-fork/`; JSON schema stays stable so swap cost is bounded to the editor shell |
-| Cloudflare primitive drift (D1 API breaks, R2 pricing changes) | Adapter layer in `packages/storage/` isolates Cloudflare specifics; contingency port to Hetzner/Oracle in infra already exists |
-| Novelty claims attract scrutiny and disappointment if imperfect | Position the claims as SLOs we're tracking publicly on the README, not as marketing absolutes; update numbers monthly |
+| Post-handover SLO unmeetable because editors still confuse on edge cases                  | Ship with a Loom-based quickstart per project; add contextual help in the admin; don't make the 30-day-zero-tickets claim public until 5 clients validate it             |
+| D1 hits scale limits earlier than expected (10 GB, 1 billion reads/day)                   | Partition strategy: one D1 per workspace at scale; document cutover path; add Turso or Postgres adapter as escape hatch in Phase C                                       |
+| Puck becomes abandoned or pivots away from OSS                                            | Fork in `packages/blocks/puck-fork/`; JSON schema stays stable so swap cost is bounded to the editor shell                                                               |
+| Cloudflare primitive drift (D1 API breaks, R2 pricing changes)                            | Adapter layer in `packages/storage/` isolates Cloudflare specifics; contingency port to Hetzner/Oracle in infra already exists                                           |
+| Novelty claims attract scrutiny and disappointment if imperfect                           | Position the claims as SLOs we're tracking publicly on the README, not as marketing absolutes; update numbers monthly                                                    |
 
 ## SaaS B2B + Developer Tool Specific Requirements
 
 ### Project-Type Overview
 
-Possible CMS is a multi-tenant SaaS-shaped platform distributed primarily as open-source self-host, with a developer-tool surface (SDK + CLI + block registry) wrapped around the same core. Every `saas_b2b` pattern applies to the *hosted/self-hosted deployment model* — tenancy, permissions, integrations — while every `developer_tool` pattern applies to *how external developers extend it* — npm packages, type surfaces, install flow, examples.
+Possible CMS is a multi-tenant SaaS-shaped platform distributed primarily as open-source self-host, with a developer-tool surface (SDK + CLI + block registry) wrapped around the same core. Every `saas_b2b` pattern applies to the _hosted/self-hosted deployment model_ — tenancy, permissions, integrations — while every `developer_tool` pattern applies to _how external developers extend it_ — npm packages, type surfaces, install flow, examples.
 
 ### Technical Architecture Considerations
 
@@ -348,19 +353,19 @@ Hierarchy: `workspace → project → site → { page, record, asset }`.
 
 **Phase A (single workspace, no RBAC):**
 
-| Role | Capability |
-|------|------------|
+| Role                      | Capability                                        |
+| ------------------------- | ------------------------------------------------- |
 | Admin user (GitHub OAuth) | Full read/write on all sites within the workspace |
-| Agent (API token) | Per-token scoped; see scopes below |
+| Agent (API token)         | Per-token scoped; see scopes below                |
 
 **Phase B (multi-tenant RBAC):**
 
-| Role | Pages | Records | Media | Schema | Publish | Workspace admin |
-|------|-------|---------|-------|--------|---------|-----------------|
-| `owner` | RW | RW | RW | RW | ✓ | ✓ |
-| `editor` | RW | RW | RW | — | ✓ | — |
-| `developer` | RW | RW | RW | RW | — | — |
-| `viewer` | R | R | R | R | — | — |
+| Role        | Pages | Records | Media | Schema | Publish | Workspace admin |
+| ----------- | ----- | ------- | ----- | ------ | ------- | --------------- |
+| `owner`     | RW    | RW      | RW    | RW     | ✓       | ✓               |
+| `editor`    | RW    | RW      | RW    | —      | ✓       | —               |
+| `developer` | RW    | RW      | RW    | RW     | —       | —               |
+| `viewer`    | R     | R       | R     | R      | —       | —               |
 
 **Agent API token scopes** (Phase A + onwards, orthogonal to user roles):
 `read:content`, `read:schema`, `write:content`, `write:schema`, `publish`, `delete`. Tokens scoped to `site_id` (optional) or `project_id`. Default scope set for Kanousei Web Studio agents: `read:*`, `write:content`, `publish` — **not** `write:schema` or `delete` without explicit grant.
@@ -374,9 +379,11 @@ Hierarchy: `workspace → project → site → { page, record, asset }`.
 ### Integration List
 
 **Platform integrations (not optional — these ARE the platform):**
+
 - Cloudflare D1 · R2 · KV · Workers · Pages · Cloudflare Images · Workers Analytics · Cloudflare Access (Phase B auth alt)
 
 **Build / ecosystem integrations (tightly coupled):**
+
 - GitHub OAuth (user auth, MVP)
 - Puck (visual block canvas)
 - Drizzle ORM + drizzle-kit (D1 migrations)
@@ -385,6 +392,7 @@ Hierarchy: `workspace → project → site → { page, record, asset }`.
 - MDX / `@mdx-js/mdx` (RichText block body)
 
 **Consumer integrations (via SDK):**
+
 - Astro content collections (build-time export target)
 - Next.js App Router (runtime SDK with `<Render />`)
 - Svelte / SvelteKit (runtime SDK, same JSON output)
@@ -403,22 +411,23 @@ No regulated compliance load (domain=general). Universal hygiene items:
 
 ### Language Matrix
 
-| Surface | Language | Notes |
-|---------|----------|-------|
-| Admin app | TypeScript (React) | strict mode, no `any` except in 3rd-party interop |
-| Workers (admin-api, public-api, preview) | TypeScript | compiled via wrangler, `@cloudflare/workers-types` |
-| SDK (`@possible-cms/sdk`) | TypeScript | ships with `.d.ts` + CJS + ESM builds |
-| Schema kit (`@possible-cms/schema-kit`) | TypeScript | Zod helpers, typed by `z.infer` throughout |
-| Blocks (`@possible-cms/blocks`) | TypeScript + React | each block is `{ zodProps, render: FC, fields: PuckField[] }` |
-| CLI (`@possible-cms/cli`) | TypeScript (tsx-run) | distributed as bin in npm package |
-| Migrations | SQL | Drizzle-generated, plain SQL reviewed on PR |
-| Consumer site integrations | TS or JS | consumers may use either; types always available |
+| Surface                                  | Language             | Notes                                                         |
+| ---------------------------------------- | -------------------- | ------------------------------------------------------------- |
+| Admin app                                | TypeScript (React)   | strict mode, no `any` except in 3rd-party interop             |
+| Workers (admin-api, public-api, preview) | TypeScript           | compiled via wrangler, `@cloudflare/workers-types`            |
+| SDK (`@possible-cms/sdk`)                | TypeScript           | ships with `.d.ts` + CJS + ESM builds                         |
+| Schema kit (`@possible-cms/schema-kit`)  | TypeScript           | Zod helpers, typed by `z.infer` throughout                    |
+| Blocks (`@possible-cms/blocks`)          | TypeScript + React   | each block is `{ zodProps, render: FC, fields: PuckField[] }` |
+| CLI (`@possible-cms/cli`)                | TypeScript (tsx-run) | distributed as bin in npm package                             |
+| Migrations                               | SQL                  | Drizzle-generated, plain SQL reviewed on PR                   |
+| Consumer site integrations               | TS or JS             | consumers may use either; types always available              |
 
 No polyglot runtime. If a Phase C plugin needs native code, it must compile to WASM — Workers constraint.
 
 ### Installation Methods
 
 **1. Self-host (primary):**
+
 ```bash
 git clone git@github.com:kanousei/possible-cms.git
 cd possible-cms
@@ -428,6 +437,7 @@ wrangler d1 create possible-cms && wrangler d1 migrations apply
 wrangler deploy
 # open the deployed admin, log in
 ```
+
 Target: <10 minutes from clone to working admin on a fresh machine.
 
 **2. Template fork (secondary, Phase C):**
@@ -442,6 +452,7 @@ GitHub "Use this template" on `kanousei/possible-cms` — fork, customize, deplo
 ### API Surface
 
 **Admin API (tRPC over HTTPS, Worker `admin-api`):**
+
 - `auth.login`, `auth.session`, `auth.logout`
 - `workspace.{list, get, update}`, `project.{list, create, update}`, `site.{list, create, update}`
 - `page.{list, get, save, publish, schedule, archive}`
@@ -453,6 +464,7 @@ GitHub "Use this template" on `kanousei/possible-cms` — fork, customize, deplo
 - `agent.{issueToken, revokeToken, listTokens}`
 
 **Public API (REST over HTTPS, Worker `public-api`, KV-cached):**
+
 - `GET /v1/{site}/pages/{slug}` → `{ blocks, meta, renderedHtml? }` (rendered HTML optional query param for static consumers)
 - `GET /v1/{site}/{collection}/{slug}` → single record
 - `GET /v1/{site}/{collection}?limit&offset&filter` → record list
@@ -464,6 +476,7 @@ All responses are JSON. All public responses are edge-cached. All admin mutation
 ### Code Examples
 
 **Register a block:**
+
 ```ts
 // packages/blocks/src/pricing.tsx
 import { z } from 'zod'
@@ -495,6 +508,7 @@ export const Pricing = block({
 ```
 
 **Use the SDK to render a page (Next.js):**
+
 ```ts
 // app/[slug]/page.tsx
 import { createClient, Render } from '@possible-cms/sdk'
@@ -509,20 +523,30 @@ export default async function Page({ params }: { params: { slug: string } }) {
 ```
 
 **Agent operation (pseudo-code):**
+
 ```ts
 // PaperclipAI Web Studio agent
-const cms = createClient({ endpoint: CMS_URL, site: 'sunstone', token: AGENT_TOKEN })
+const cms = createClient({
+  endpoint: CMS_URL,
+  site: "sunstone",
+  token: AGENT_TOKEN,
+});
 const members = await Promise.all(
-  figmaBios.map(bio => cms.records.create('TeamMember', bio, { idempotencyKey: bio.id }))
-)
+  figmaBios.map((bio) =>
+    cms.records.create("TeamMember", bio, { idempotencyKey: bio.id }),
+  ),
+);
 const page = await cms.pages.create({
-  slug: 'team',
-  blocks: { root: { props: {} }, content: [
-    { type: 'Hero', props: { heading: 'Meet the team' } },
-    { type: 'TeamGrid', props: { memberIds: members.map(m => m.id) } }
-  ]}
-})
-await cms.pages.schedule(page.id, { at: tomorrow6AM })
+  slug: "team",
+  blocks: {
+    root: { props: {} },
+    content: [
+      { type: "Hero", props: { heading: "Meet the team" } },
+      { type: "TeamGrid", props: { memberIds: members.map((m) => m.id) } },
+    ],
+  },
+});
+await cms.pages.schedule(page.id, { at: tomorrow6AM });
 ```
 
 ### Migration Guide
@@ -551,6 +575,7 @@ Every release ships `migrations/NNNN_*.sql` + a `MIGRATION-NOTES.md` entry. Cons
 **MVP approach: platform + experience hybrid.** Not a pure problem-solving MVP (the market has plenty of working CMSs), not a revenue MVP (OSS self-host, no monetization in v1). Possible CMS is a **platform MVP** because it has to work as the foundation for every Kanousei/AIIA/client web project going forward — getting the hierarchy (`workspace → project → site`) and extensibility (block registry, schema bundles) wrong is expensive to unwind. It is also an **experience MVP** because Priya's journey has to feel good on day 1 or the entire post-handover thesis collapses: a CMS that nobody uses is not a CMS.
 
 **What this means concretely:**
+
 - Shippable MVP = Priya's happy path works end-to-end for AIIA content on production, and Marco's 4-hour flow works from a fresh clone. Everything else is gravy.
 - We resist the SaaS-MVP instinct to ship a narrow vertical (e.g. "only blog posts") because narrow isn't platform. Width of the 10-block set + records CRUD + multi-site is non-negotiable.
 - We resist the platform-MVP instinct to generalize every surface (e.g. plugin API in Phase A) because generalization before validation is expensive. Plugin API waits until 2+ real projects have shipped on Phase A.
@@ -561,18 +586,18 @@ Every release ships `migrations/NNNN_*.sql` + a `MIGRATION-NOTES.md` entry. Cons
 
 Opus orchestrates; Sonnet/Haiku personas with practical skills execute in parallel workflows.
 
-| Role | Who | Model | Scope |
-|------|-----|-------|-------|
-| Orchestrator / strategy / PRD / ADRs / integration / review | This session (Opus) | `claude-opus-4-7` | Routes work, holds schema contract, reviews PRs, wires integration seams, final gate on each week's demo |
-| CEO / triage / prioritisation | Web Studio CEO-agent | Sonnet | Epic assignment |
-| PM / story breakdown | Web Studio PM-agent | Sonnet | Stories + acceptance criteria |
-| Backend worker A (Workers + D1 + tRPC) | Web Studio Backend-dev OR parallel Claude-Code Sonnet | Sonnet | Schema, migrations, admin-api |
-| Backend worker B (public-api + KV + SDK) | Parallel Claude-Code Sonnet | Sonnet | Public REST + caching + `@possible-cms/sdk` |
-| Frontend worker A (admin shell + auth) | Web Studio Frontend-dev | Sonnet | Next.js shell, OAuth flow, list views |
-| Frontend worker B (Puck canvas + 10 blocks) | Parallel Claude-Code Sonnet | Sonnet | Block registry, canvas, per-block props editors |
-| CLI + examples (AIIA + Barbuda seed) | Haiku worker | Haiku | `init`/`export` CLI, seed importers |
-| QA / E2E | Web Studio QA-agent | Sonnet | Playwright suite |
-| Design (admin UX, block defaults) | Web Studio Designer-agent | Sonnet | Week 2 + week 4 touchpoints |
+| Role                                                        | Who                                                   | Model             | Scope                                                                                                    |
+| ----------------------------------------------------------- | ----------------------------------------------------- | ----------------- | -------------------------------------------------------------------------------------------------------- |
+| Orchestrator / strategy / PRD / ADRs / integration / review | This session (Opus)                                   | `claude-opus-4-7` | Routes work, holds schema contract, reviews PRs, wires integration seams, final gate on each week's demo |
+| CEO / triage / prioritisation                               | Web Studio CEO-agent                                  | Sonnet            | Epic assignment                                                                                          |
+| PM / story breakdown                                        | Web Studio PM-agent                                   | Sonnet            | Stories + acceptance criteria                                                                            |
+| Backend worker A (Workers + D1 + tRPC)                      | Web Studio Backend-dev OR parallel Claude-Code Sonnet | Sonnet            | Schema, migrations, admin-api                                                                            |
+| Backend worker B (public-api + KV + SDK)                    | Parallel Claude-Code Sonnet                           | Sonnet            | Public REST + caching + `@possible-cms/sdk`                                                              |
+| Frontend worker A (admin shell + auth)                      | Web Studio Frontend-dev                               | Sonnet            | Next.js shell, OAuth flow, list views                                                                    |
+| Frontend worker B (Puck canvas + 10 blocks)                 | Parallel Claude-Code Sonnet                           | Sonnet            | Block registry, canvas, per-block props editors                                                          |
+| CLI + examples (AIIA + Barbuda seed)                        | Haiku worker                                          | Haiku             | `init`/`export` CLI, seed importers                                                                      |
+| QA / E2E                                                    | Web Studio QA-agent                                   | Sonnet            | Playwright suite                                                                                         |
+| Design (admin UX, block defaults)                           | Web Studio Designer-agent                             | Sonnet            | Week 2 + week 4 touchpoints                                                                              |
 
 **Skills attached to workers** (per Kanousei skill registry): `bmad-dev` + `bmad-dev-story` for implementation; `bmad-code-review` + `review` on every PR; `bmad-qa-generate-e2e-tests` + `qa` for QA worker; `frontend-design` + `app-design` for frontend workers; `claude-api` where Workers AI primitives come into play; `accessibility-compliance-checker` for admin UI; `webapp-testing` for Playwright authoring.
 
@@ -596,7 +621,7 @@ Items specifically tested and **cut from MVP** because a journey still works wit
 
 - **RBAC roles** — Phase A single workspace means "the admin team shares one role." Priya doesn't need viewer-vs-editor distinction yet. Ship flat-auth, add roles Phase B.
 - **Versioning + revert** — Priya might make a mistake; audit log + manual D1 restore is acceptable for v1. Cheap to add in Phase B once D1 versioning tooling matures.
-- **Localisation** — AIIA launch is en-only. Barbuda is en-only. A locale *field* exists in the schema (future-proof) but cross-locale integrity is Phase B.
+- **Localisation** — AIIA launch is en-only. Barbuda is en-only. A locale _field_ exists in the schema (future-proof) but cross-locale integrity is Phase B.
 - **Preview Durable Objects** — replaced with signed-URL preview (5-min TTL token) for v1. Durable Objects come back in Phase B when multi-user preview sessions matter.
 - **Webhooks** — consumers can poll or use `possible-cms export` on a cron in v1. Webhooks are Phase B.
 - **FTS5 / Vectorize search** — admin search over records is a convenience for large catalogs. AIIA has <50 records at launch; scan-and-filter is fine. Phase B.
@@ -604,7 +629,7 @@ Items specifically tested and **cut from MVP** because a journey still works wit
 
 ### Phased Roadmap — Strategic View
 
-(Feature lists live in Product Scope; below is the *why* for each phase boundary.)
+(Feature lists live in Product Scope; below is the _why_ for each phase boundary.)
 
 **Phase A — MVP (weeks 1-6).** Platform + experience foundation. Single-workspace, 10 blocks, multi-project, multi-site, OSS release at v0.1.0. Gate: AIIA consumes it in production via build-time export by week 8. Learning: does Priya stop filing tickets?
 
@@ -632,7 +657,7 @@ Items specifically tested and **cut from MVP** because a journey still works wit
 
 - 20% slack per milestone (6-week plan has 7 weeks of calendar).
 - Hybrid fallback: Opus orchestrator + 2 parallel Claude-Code Sonnet workers direct, no PaperclipAI. Still lands v0.1 in week 8.
-- If week slips >2 days on load-bearing path (week 2 Puck integration, week 4 publish workflow), we descope a growth feature *from Phase B* to keep Phase A on track. Phase A scope itself doesn't flex.
+- If week slips >2 days on load-bearing path (week 2 Puck integration, week 4 publish workflow), we descope a growth feature _from Phase B_ to keep Phase A on track. Phase A scope itself doesn't flex.
 
 ## Functional Requirements
 
@@ -830,7 +855,7 @@ Possible CMS is a **marketing-content CMS**. The following areas are categorical
 ### Not in scope — product admin surfaces (belong to consumer applications, not the CMS)
 
 - **AIIA product admin.** End-user accounts, API keys, licence records, Intent API configuration, model routing rules, usage metering, billing, customer-facing integration consoles, partner portals. These live in AIIA's own admin application against AIIA's own data store.
-- **Other consumer-project admins.** If Barbuda Leisure has a booking-management back office, if Sunstone has a loyalty program dashboard, if LRG has a player-profile console — those are *not* Possible CMS features. Those consumer apps may *link to* or *embed* CMS content, but the CMS does not own their data model.
+- **Other consumer-project admins.** If Barbuda Leisure has a booking-management back office, if Sunstone has a loyalty program dashboard, if LRG has a player-profile console — those are _not_ Possible CMS features. Those consumer apps may _link to_ or _embed_ CMS content, but the CMS does not own their data model.
 - **Customer-facing dashboards.** Any surface where an end-user of a consumer product logs in and manages their own account/data is not the CMS.
 
 ### Not in scope — operational concerns of the consumer site
@@ -841,7 +866,7 @@ Possible CMS is a **marketing-content CMS**. The following areas are categorical
 
 ### Not in scope — alternative content modalities
 
-- **Static site generation itself.** The CMS *exports* content for SSG builds and *serves* content at runtime via the public API; it does not itself become a site generator. Consumer sites (Next.js, Astro, SvelteKit, Hugo, etc.) remain responsible for layout, theming, routing, and final rendering beyond block output.
+- **Static site generation itself.** The CMS _exports_ content for SSG builds and _serves_ content at runtime via the public API; it does not itself become a site generator. Consumer sites (Next.js, Astro, SvelteKit, Hugo, etc.) remain responsible for layout, theming, routing, and final rendering beyond block output.
 - **Binary asset pipelines beyond images.** Video transcoding, PDF generation, audio processing are out of scope. R2 stores these as binaries; the CMS does not transform them.
 - **Rich-text editing beyond MDX.** No WYSIWYG-HTML editor; MDX is the single expressive body format.
 
