@@ -1,0 +1,7 @@
+# Copy to .dev.vars for local development.
+# These are injected as environment variables by `wrangler dev`.
+# See ADR-005 for secrets management.
+
+JWT_SECRET=dev-jwt-secret-change-me
+GITHUB_CLIENT_ID=
+GITHUB_CLIENT_SECRET=

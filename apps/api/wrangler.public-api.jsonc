@@ -1,0 +1,30 @@
+{
+  // ADR-003 — public-api Worker: REST, KV-cached, read-only to D1.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "possible-cms-public-api",
+  "main": "src/public-api/index.ts",
+  "compatibility_date": "2026-04-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": true,
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "possible-cms",
+      "database_id": "FILL_AT_CREATE"
+    }
+  ],
+  "kv_namespaces": [
+    {
+      "binding": "CMS_KV",
+      "id": "FILL_AT_CREATE"
+    }
+  ],
+  "env": {
+    "production": {
+      "name": "possible-cms-public-api",
+      "route": {
+        "pattern": "api.possiblecms.dev/*"
+      }
+    }
+  }
+}

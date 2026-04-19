@@ -1,0 +1,30 @@
+{
+  // ADR-003 — preview Worker: signed token → draft render bypass.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "possible-cms-preview",
+  "main": "src/preview/index.ts",
+  "compatibility_date": "2026-04-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": true,
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "possible-cms",
+      "database_id": "FILL_AT_CREATE"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "MEDIA",
+      "bucket_name": "possible-cms-media"
+    }
+  ],
+  "env": {
+    "production": {
+      "name": "possible-cms-preview",
+      "route": {
+        "pattern": "preview.possiblecms.dev/*"
+      }
+    }
+  }
+}

@@ -7,7 +7,9 @@
   "type": "module",
   "scripts": {
     "dev": "wrangler dev",
-    "deploy": "wrangler deploy",
+    "dev:public-api": "wrangler dev -c wrangler.public-api.jsonc --port 8788",
+    "dev:preview": "wrangler dev -c wrangler.preview.jsonc --port 8789",
+    "deploy": "wrangler deploy && wrangler deploy -c wrangler.public-api.jsonc && wrangler deploy -c wrangler.preview.jsonc",
     "build": "tsc --noEmit",
     "typecheck": "tsc --noEmit",
     "test": "vitest run --passWithNoTests",
