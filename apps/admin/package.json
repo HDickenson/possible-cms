@@ -1,0 +1,39 @@
+{
+  "name": "@possible-cms/admin",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Possible CMS admin UI. Next.js 15 App Router on Cloudflare Pages.",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit",
+    "pages:build": "npx @cloudflare/next-on-pages",
+    "pages:deploy": "wrangler pages deploy .vercel/output/static"
+  },
+  "dependencies": {
+    "@possible-cms/blocks": "workspace:*",
+    "@possible-cms/schema-kit": "workspace:*",
+    "@possible-cms/sdk": "workspace:*",
+    "@trpc/client": "11.0.0-rc.626",
+    "@trpc/react-query": "11.0.0-rc.626",
+    "@tanstack/react-query": "5.59.0",
+    "@measured/puck": "0.16.0",
+    "next": "15.0.0",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "react-hook-form": "7.53.0",
+    "@hookform/resolvers": "3.9.0",
+    "zod": "3.23.8"
+  },
+  "devDependencies": {
+    "@cloudflare/next-on-pages": "1.13.0",
+    "@types/react": "19.0.0",
+    "@types/react-dom": "19.0.0",
+    "typescript": "5.6.3",
+    "wrangler": "3.90.0"
+  }
+}

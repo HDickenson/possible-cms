@@ -1,0 +1,15 @@
+node_modules/
+.next/
+dist/
+build/
+coverage/
+.turbo/
+.wrangler/
+.dev.vars
+.dev.vars.local
+*.log
+.DS_Store
+.env
+.env.local
+.vercel/
+.cache/

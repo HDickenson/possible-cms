@@ -1,0 +1,41 @@
+{
+  // ADR-005 — three Workers share this config via per-environment named deployments.
+  // `wrangler deploy` from this dir deploys all three as separate Workers using
+  // worker-name suffix. Bindings inherited unless overridden per env.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "possible-cms-admin-api",
+  "main": "src/admin-api/index.ts",
+  "compatibility_date": "2026-04-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": true,
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "possible-cms",
+      "database_id": "FILL_AT_CREATE"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "MEDIA",
+      "bucket_name": "possible-cms-media"
+    }
+  ],
+  "kv_namespaces": [
+    {
+      "binding": "CMS_KV",
+      "id": "FILL_AT_CREATE"
+    }
+  ],
+  "env": {
+    "preview": {
+      "name": "possible-cms-admin-api-preview"
+    },
+    "production": {
+      "name": "possible-cms-admin-api",
+      "route": {
+        "pattern": "admin.possiblecms.dev/*"
+      }
+    }
+  }
+}

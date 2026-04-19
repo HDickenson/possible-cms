@@ -1,0 +1,19 @@
+# Copy this file to .dev.vars and fill in your local values.
+# Production values go into Cloudflare Secrets via `wrangler secret put`.
+# Never commit secrets to this repo.
+
+# GitHub OAuth (create an OAuth App at https://github.com/settings/developers)
+GITHUB_CLIENT_ID=
+GITHUB_CLIENT_SECRET=
+
+# Session signing (generate with: openssl rand -base64 32)
+AUTH_SECRET=
+
+# Signed preview URL HMAC (generate with: openssl rand -base64 32)
+PREVIEW_SECRET=
+
+# Agent API token HMAC key (generate with: openssl rand -base64 32)
+AGENT_TOKEN_SECRET=
+
+# Cloudflare account ID (found in Cloudflare dashboard)
+CF_ACCOUNT_ID=
